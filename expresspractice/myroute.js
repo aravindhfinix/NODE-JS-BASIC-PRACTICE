@@ -11,7 +11,7 @@ router.get('/',(req,res)=>{
     res.send(users);
     });
     router.get('/:id',(req,res)=>{
-        const user=users.find(c=>c.id===parseInt(req.params.id));
+        const user=users.find(h=>h.id===parseInt(req.params.id));
         if(!user)res.status(404).send('the requested user is not found!!!!!!!!1');
         res.send(user);
         });
