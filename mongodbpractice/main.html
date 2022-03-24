@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>sign up</h1>
+    <form action="http://localhost:8080/create" method="post">
+   name: <input type="text" name="user">
+   email: <input type="email" name="email">
+   passord: <input type="password" name="password">
+    <button type="submit">+</button>
+</form>
+<h1>search user</h1>
+<form action="http://localhost:8080/find" method="get">
+  search:  <input type="text" name="search">
+  <button type="submit">search</button>
+</form>
+<h1>login</h1>
+  <form action="http://localhost:8080/login" method="post">
+     username: <input type="text" name="user">
+     password: <input type="password" name="password">
+      <button type="submit">login</button>
+  </form>
+
+</body>
+</html>
