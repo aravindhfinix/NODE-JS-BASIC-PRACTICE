@@ -6,6 +6,8 @@ const todo=require('./models/todo');
 const res = require('express/lib/response');
 const { get } = require('express/lib/response');
 const { errorMonitor } = require('events');
+const req = require('express/lib/request');
+const { findOneAndUpdate } = require('./models/todo');
 app.use(express.json());
 app.use(express.urlencoded({extended:"false"}));
 
@@ -33,6 +35,40 @@ app.get('/read',async(req,res)=>{
     res.json(records)
     console.log(records )
 });
+
+//updating a user in db
+app.post('/update',async(req,res)=>
+{
+  const {old:oldTitle,new:newTitle}=req.body
+   const response=await todo.findOneAndUpdate(
+     {
+     user:oldTitle
+   },
+   
+   {$set:{
+     user:newTitle
+    }
+   },
+   {new:true})
+   console.log(response)
+   res.json('status ok')
+});
+
+//deleting a user in db
+app.post('/delete',async(req,res)=>
+{
+  const{user}=req.body
+  console.log(user,'/delete')
+   const response=await todo.deleteOne( {user} )
+   console.log(response,'/delete response')
+   res.json('deleted')
+});
+
+
+
+
+
+
 //seaching particular user in db
 app.get('/find',async(req,res)=>{
     const display=await todo.findOne({password:req.query.search})

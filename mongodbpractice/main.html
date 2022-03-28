@@ -19,6 +19,19 @@
   search:  <input type="text" name="search">
   <button type="submit">search</button>
 </form>
+
+<h1>update user</h1>
+<form action="http://localhost:8080/update" method="post">
+oldname: <input type="text" name="old">
+newname: <input type="text" name="new">
+<button type="submit">update</button>
+</form>
+<h1>delete user</h1>
+<form action="http://localhost:8080/delete" method="post">
+delete user: <input type="text" name="user">
+<button type="submit">delete</button>
+</form>
+
 <h1>login</h1>
   <form action="http://localhost:8080/login" method="post">
      username: <input type="text" name="user">
