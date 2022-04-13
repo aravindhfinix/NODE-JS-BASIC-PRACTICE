@@ -1,8 +1,11 @@
-const express=require('express')
-const show=require('../controllers/user')
+const express=require('express');
 const router = express.Router();
+const  user = require ('../controllers/user')
 
 
-router.get('/show',show)
+router.post('/signup',user.signup)
+router.post('/login',user.login)
+router.post('/update/:id',user.update)
+router.post('/delete/:id',user.delete)
 
 module.exports=router

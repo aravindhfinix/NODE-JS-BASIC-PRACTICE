@@ -1,29 +1,51 @@
 const express=require('express')
 const app=express();
+const nodemailer=require('nodemailer')
 const mongoose=require('mongoose');
 const {requireAuth } = require('../middle ware/veify token')
-const schema=require('../models/schema')
+const userschema=require('../models/userschema')
 app.use(express.json())
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 app.use(express.urlencoded({extended:true}))
 
-
-
-exports.show=(req,res)=>{res.send('hello world')}
-app.post('/sign-up',async(req,res)=>{
+exports.signup=async(req,res)=>{
+    var otp=Math.random()
+    otp=otp*10000
+    otp=parseInt(otp)
   const {email,name,password}=req.body;
-  try{
-    const user= await schema.create({email,name,password})
-    console.log(user)
-    res.send(user)
+    const user= await userschema.create({email,name,password})
+        .then(result=>{
+            console.log(result);
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'aravindhfinix.fsd@gmail.com',
+    pass: 'aravindh@IT1'
   }
-  catch(err){
+});
+
+var mailOptions = {
+  from: 'aravindhfnix@.fsd@gmail.com',
+  to:req.body.email,
+  subject: 'otp for registration',
+  html: `messing sending to host<h1>the otp for${req.body.name} is ${otp}</h1> `
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+})
+    })
+ . catch(err=>{
          res.send(err.message)
      }
-  });
-  app.post('/login',async (req,res,next) => {
-    schema.find({email : req.body.email})
+  );}
+  exports.login=async (req,res,next) => {
+    userschema.find({email : req.body.email})
     .exec()
     .then(user => {
         if(user.length <1){
@@ -63,21 +85,21 @@ app.post('/sign-up',async(req,res)=>{
     });
   
   
-  }); 
+  }; 
 //update user details
-app.patch('/users/update/:id',async(req,res)=>{
+exports.update=async(req,res)=>{
     const id = req.params.id
-    await schema.findOneAndUpdate({id:id},{$set:req.body} )
+    await userschema.findOneAndUpdate({id:id},{$set:req.body} )
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
-})
+}
 //delete user
-app.delete('/user/delete/:id',async(req,res)=>{
+exports.delete=async(req,res)=>{
     const id = req.params.id
     await schema.deleteOne({id:id} )
     .exec()
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
 
-})
+}
 

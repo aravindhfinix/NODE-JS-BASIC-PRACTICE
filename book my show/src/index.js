@@ -5,11 +5,11 @@ const userRoutes=require('./routes/userrouts')
 mongoose.connect("mongodb://localhost/booking")
 
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.json());
 
 
-app.use('/', userRoutes)
+app.use('/user', userRoutes)
 app.use((req, res, next) => {
     const error =new Error("not found");
     error.status = 404;
