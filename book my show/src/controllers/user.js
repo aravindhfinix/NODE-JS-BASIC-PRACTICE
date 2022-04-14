@@ -2,19 +2,19 @@ const express=require('express')
 const app=express();
 const nodemailer=require('nodemailer')
 const mongoose=require('mongoose');
-const {requireAuth } = require('../middle ware/veify token')
+const requireAuth= require('../middle ware/veify token')
 const userschema=require('../models/userschema')
 app.use(express.json())
 const bcrypt=require('bcrypt')
-const jwt=require('jsonwebtoken')
+const jwt=require('jsonwebtoken');
 app.use(express.urlencoded({extended:true}))
 
 exports.signup=async(req,res)=>{
     var otp=Math.random()
     otp=otp*10000
     otp=parseInt(otp)
-  const {email,name,password}=req.body;
-    const user= await userschema.create({email,name,password})
+  const {email,name,password}=req.body
+  const user= await userschema.create({email,name,password,otp})
         .then(result=>{
             console.log(result);
 var transporter = nodemailer.createTransport({
@@ -44,8 +44,19 @@ transporter.sendMail(mailOptions, function(error, info){
          res.send(err.message)
      }
   );}
-  exports.login=async (req,res,next) => {
-    userschema.find({email : req.body.email})
+
+  exports.otpverify=async(req,res)=>{
+   const otp= await userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
+      if(req.body.otp==otp.otp){
+        res.status(201).send('signup success')
+      }
+      else{
+        res.status(500).send("invalid otp")
+      }
+
+  }
+  exports.login=async(req,res,next) => {
+    await userschema.find({email : req.body.email})
     .exec()
     .then(user => {
         if(user.length <1){
@@ -86,6 +97,7 @@ transporter.sendMail(mailOptions, function(error, info){
   
   
   }; 
+ 
 //update user details
 exports.update=async(req,res)=>{
     const id = req.params.id
@@ -96,7 +108,7 @@ exports.update=async(req,res)=>{
 //delete user
 exports.delete=async(req,res)=>{
     const id = req.params.id
-    await schema.deleteOne({id:id} )
+    await userschema.deleteOne({id:id} )
     .exec()
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})

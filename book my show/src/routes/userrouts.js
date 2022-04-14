@@ -7,5 +7,7 @@ router.post('/signup',user.signup)
 router.post('/login',user.login)
 router.post('/update/:id',user.update)
 router.post('/delete/:id',user.delete)
+router.patch('/verify',user.otpverify)
+
 
 module.exports=router

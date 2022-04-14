@@ -15,6 +15,7 @@ const userSchema=new mongoose.Schema({
         required:true,
         minlength:6
     },
+    otp:{type:Number},
 });
  
 userSchema.pre('save',async function(next){

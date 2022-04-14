@@ -2,14 +2,19 @@ const mongoose=require('mongoose');
 const express=require('express');
 const app=express();
 const userRoutes=require('./routes/userrouts')
+const movieRoutes=require('./routes/movieroutes')
+const theaterRoutes=require('./routes/theaterroutes')
 mongoose.connect("mongodb://localhost/booking")
 
 
-// app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 
 app.use('/user', userRoutes)
+app.use('/movie', movieRoutes)
+app.use('/theater', theaterRoutes)
+
 app.use((req, res, next) => {
     const error =new Error("not found");
     error.status = 404;
