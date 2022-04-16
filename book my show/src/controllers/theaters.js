@@ -21,3 +21,8 @@ exports.update=async(req,res)=>{
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
 }
+exports.findmovies=async(req,res)=>{
+await theaterschema.find().populate('movies')
+.then(results=>{res.send(results)})
+.catch(errors=>{res.send(errors.message)})
+}
