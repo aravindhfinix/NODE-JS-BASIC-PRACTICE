@@ -16,7 +16,7 @@ app.use('/movie', movieRoutes)
 app.use('/theater', theaterRoutes)
 
 app.use((req, res, next) => {
-    const error =new Error("not found");
+    const error =new Error("not found"); 
     error.status = 404;
     next(error);
 });
@@ -31,5 +31,5 @@ app.use((error, req, res, next) => {
 
 
 
-
-app.listen(5000,()=>{console.log('server started')})
+const port=process.ENV||4000
+app.listen(port,()=>{console.log(`server started ${port}`)})

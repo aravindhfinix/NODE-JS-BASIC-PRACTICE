@@ -1,22 +1,22 @@
 const express=require('express')
 const app=express();
-const nodemailer=require('nodemailer')
-const mongoose=require('mongoose');
-const requireAuth= require('../middle ware/veify token')
+const nodemailer=require('nodemailer');
 const userschema=require('../models/userschema')
 app.use(express.json())
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken');
 app.use(express.urlencoded({extended:true}))
 
+//SIGNUP A NEW USER AND SEND OTP
 exports.signup=async(req,res)=>{
     var otp=Math.random()
     otp=otp*10000
     otp=parseInt(otp)
-  const {email,name,password}=req.body
-  const user= await userschema.create({email,name,password,otp})
+  const {_id,email,name,password}=req.body
+  await userschema.create({_id,email,name,password,otp})
         .then(result=>{
             console.log(result);
+            res.send(result)
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -44,7 +44,7 @@ transporter.sendMail(mailOptions, function(error, info){
          res.send(err.message)
      }
   );}
-
+//VERIFY OTP PAGE
   exports.otpverify=async(req,res)=>{
    const otp= await userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
       if(req.body.otp==otp.otp){
@@ -55,6 +55,7 @@ transporter.sendMail(mailOptions, function(error, info){
       }
 
   }
+  //LOGIN USER AND CREATE TOKEN
   exports.login=async(req,res,next) => {
     await userschema.find({email : req.body.email})
     .exec()
