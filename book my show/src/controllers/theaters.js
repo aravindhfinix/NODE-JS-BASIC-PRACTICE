@@ -46,3 +46,4 @@ await theaterschema.find().populate('movies')
 .then(results=>{res.send(results)})
 .catch(errors=>{res.send(errors.message)})
 }
+

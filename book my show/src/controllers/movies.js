@@ -36,3 +36,7 @@ exports.find=async(req,res)=>{
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
 }
+//enter booking tickets
+exports.bookmovies=async(req,res)=>{
+    await movieSchema.fi
+}
