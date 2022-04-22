@@ -4,6 +4,7 @@ const app=express();
 const userRoutes=require('./routes/userrouts')
 const movieRoutes=require('./routes/movieroutes')
 const theaterRoutes=require('./routes/theaterroutes')
+const seatroutes=require('./routes/seatroutes')
 mongoose.connect("mongodb://localhost/booking")
 
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/user', userRoutes)
 app.use('/movie', movieRoutes)
 app.use('/theater', theaterRoutes)
+app.use('/seats',seatroutes)
 
 app.use((req, res, next) => {
     const error =new Error("not found"); 
