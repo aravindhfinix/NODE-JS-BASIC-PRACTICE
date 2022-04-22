@@ -4,6 +4,7 @@ const seatschema=require('../models/seatschema')
 const movieSchema=require('../models/movieschema');
 const jwt=require('jsonwebtoken')
 app.use(express.json())
+const nodemailer=require('nodemailer')
 app.use(express.urlencoded({extended:true}))
 
 //creating seats
@@ -21,15 +22,16 @@ exports.create=async (req,res)=>{
 };
 
 //updating the seat status by owner
-exports.update=async (reeq,res)=>{
-    await seatschema.findByIdAndUpdate(req.params.id,{status:req.body})
+exports.update=async (req,res)=>{
+    await seatschema.findByIdAndUpdate(req.params.id,{$set:{status:req.body.status}})
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
 };
 
 //finding the total no of seats
 exports.showallseats=async (req,res)=>{
-    await seatschema.find({movie:req.params.id},{time:req.body.time})
+  await seatschema.find({movie:req.params.id},{time:req.body.time})
+   
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
 };
@@ -40,15 +42,18 @@ exports.selectingseats=async(req,res)=>{
       res.send(seat)
    }
    else{
-       res.send('seat booked')
+       res.send("seat not available")
    }
 };
 //ticket booked
 exports.tickets=async(req,res)=>{
     await seatschema.findByIdAndUpdate(req.params.id,{status:"booked"})
-    const token = req.headers.authorization.split(" ")[1];
-    const decoded = jwt.verify(token,'secret key')
-    .then(results=>{res.send(results)
+  
+    .then(async results=>{
+      if(results.status=="free"){
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token,'secret key')
+      if(results){
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -56,22 +61,31 @@ exports.tickets=async(req,res)=>{
               pass: 'aravindh@IT1'
             }
           });
-          
+         const movie=await movieSchema.findById({_id:results.movie})
+         console.log(movie)
           var mailOptions = {
             from: 'aravindhfnix@.fsd@gmail.com',
             to:decoded.email,
-            subject: 'otp for registration',
-            html: `messing sending to host<h1>the otp for${req.body.name} is ${otp}</h1> `
+            subject: 'ticket detailed',
+            html: `your ticket detailes<br>
+           <h1> movie:${movie.name}</h1><br>
+           <h3> seat:${results.seatnumber}</h3> <br>
+            <h3> time:${results.time}</h3><br>
+            <h3> screen:${results.screen}</h3> `
           };
           
           transporter.sendMail(mailOptions, function(error, info){
             if (error) {
               console.log(error);
             } else {
+              res.send(results)
               console.log('Email sent: ' + info.response);
+              res.send('Email sent: ' + info.response)
             }
           })}
-    )
+    }else{
+      res.send('seat alredy booked')
+    }})
     .catch(errors=>{res.send(errors.message)})
 
 };

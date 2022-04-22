@@ -12,8 +12,8 @@ exports.signup=async(req,res)=>{
     var otp=Math.random()
     otp=otp*10000
     otp=parseInt(otp)
-  const {_id,email,name,password}=req.body
-  await userschema.create({_id,email,name,password,otp})
+  const {email,name,password}=req.body
+  await userschema.create({email,name,password,otp})
         .then(result=>{
             console.log(result);
             res.send(result)
@@ -37,6 +37,7 @@ transporter.sendMail(mailOptions, function(error, info){
     console.log(error);
   } else {
     console.log('Email sent: ' + info.response);
+    res.send('Email sent: ' + info.response);
   }
 })
     })
@@ -102,7 +103,7 @@ transporter.sendMail(mailOptions, function(error, info){
 //update user details
 exports.update=async(req,res)=>{
     const id = req.params.id
-    await userschema.findOneAndUpdate({id:id},{$set:req.body} )
+    await userschema.findOneAndUpdate({_id:id},{$set:req.body} )
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
 }

@@ -11,9 +11,10 @@ exports.create=async(req,res)=>{
     await movieSchema.create({
         name:req.body.name,
         language:req.body.language,
-        theaters:await theater.findOne({name:req.body.theaters})
+        theaters:await theater.findOne({name:req.body.theaters}),
+        screen:req.body.screen
     })
-    .then(results=>{res.send(results)})
+   .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
 }
 //UPDATING THE MOVIE DETAILES
