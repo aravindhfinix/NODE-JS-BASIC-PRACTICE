@@ -11,7 +11,9 @@ mongoose.connect("mongodb://localhost/booking")
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-
+app.get('/',(req,res)=>{
+    res.send('test case')
+})
 app.use('/user', userRoutes)
 app.use('/movie', movieRoutes)
 app.use('/theater', theaterRoutes)
