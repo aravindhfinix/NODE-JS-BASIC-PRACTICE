@@ -20,13 +20,13 @@ exports.signup=async(req,res)=>{
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'aravindhfinix.fsd@gmail.com',
-    pass: 'aravindh@IT1'
+    user: '@gmail.com',
+    pass: ''
   }
 });
 
 var mailOptions = {
-  from: 'aravindhfnix@.fsd@gmail.com',
+  from: '',
   to:req.body.email,
   subject: 'otp for registration',
   html: `messing sending to host<h1>the otp for${req.body.name} is ${otp}</h1> `

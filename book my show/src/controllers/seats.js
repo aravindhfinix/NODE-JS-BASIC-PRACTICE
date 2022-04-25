@@ -57,14 +57,14 @@ exports.tickets=async(req,res)=>{
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-              user: 'aravindhfinix.fsd@gmail.com',
-              pass: 'aravindh@IT1'
+              user: '',
+              pass: ''
             }
           });
          const movie=await movieSchema.findById({_id:results.movie})
          console.log(movie)
           var mailOptions = {
-            from: 'aravindhfnix@.fsd@gmail.com',
+            from: '@gmail.com',
             to:decoded.email,
             subject: 'ticket detailed',
             html: `your ticket detailes<br>
