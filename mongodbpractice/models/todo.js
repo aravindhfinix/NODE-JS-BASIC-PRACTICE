@@ -12,6 +12,6 @@ const todoschema=new mongoose.Schema({
     },
     password:{type:Number,required:true}
 })
-const model=mongoose.model('userslist',todoschema)
+const model=mongoose.model('users',todoschema)
 
 module.exports= model

@@ -71,14 +71,14 @@ app.post('/delete',async(req,res)=>
 
 //seaching particular user in db
 app.get('/find',async(req,res)=>{
-    const display=await todo.findOne({password:req.query.search})
+    const display=await todo.findOne({user:req.body,user})
     res.json(display)
      console.log(display)
 
 });
 
 //login in model
-app.post('/login',async(req,res)=>{
+app.get('/login',async(req,res)=>{
     const usershow=await todo.findOne({user:req.body.user})
     const pwd=await todo.findOne({password:req.body.password})
      try {
