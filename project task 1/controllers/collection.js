@@ -1,10 +1,11 @@
 const express=require('express')
 const app=express();
 const collectionschema=require('../models/collectionschema')
+const adminschema=require('../models/adminschema')
 
 //create collection
 exports.create=async(req,res)=>{
-  await collectionschema.create(req.body)
+  await adminschema.create(req.body)
         .then(result=>{
             console.log(result);
             res.send(result)

@@ -7,6 +7,9 @@ const userschema=mongoose.Schema({
         required:true,
         unique:true,
         lowercase:true},
+    password:{type:String},
+    role:{type:String},
+    adminpassword:{type:Number},
     profilephoto:{type:String},
     status:{type:Boolean}
 })

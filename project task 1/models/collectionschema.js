@@ -4,7 +4,7 @@ const collectionschema=mongoose.Schema({
     name:{type:String,required:true},
     creatorName:{type:String,required:true},
     collectionImage:{type:String},
-    status:{type:Boolean},
+    status:{type:Boolean,default:true},
 
 })
 const collection=mongoose.model('collection',collectionschema)
