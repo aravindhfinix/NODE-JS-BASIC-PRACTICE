@@ -103,7 +103,7 @@ else{
     console.log('not a user')}
       )
     }
-      //update user details
+ //update user details
 exports.update=async(req,res)=>{
     const id = req.params.id
     await userschema.findOneAndUpdate({_id:id},{$set:req.body} )
