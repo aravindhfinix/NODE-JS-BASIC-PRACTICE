@@ -7,7 +7,7 @@ const bidschema=mongoose.Schema({
     nftCollection:[{type:mongoose.Schema.Types.ObjectId,ref:'collection'}],
     status:{type:Boolean},
     price:{type:Number},
-    isSold:{type:Boolean},
+    isSold:{type:Boolean,default:false},
     saleType: {
         type: String,
         enum : ['buy','bid'],
@@ -15,6 +15,7 @@ const bidschema=mongoose.Schema({
     },
     startingtime:{type:Date},
     endingtime:{type:Date},
+    bidingtime:{type:Date,default:Date.now},
     biders:[{type:mongoose.Schema.Types.ObjectId,ref:'user'}]
 })
 const bid=mongoose.model('auction',bidschema)

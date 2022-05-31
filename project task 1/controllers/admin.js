@@ -3,6 +3,7 @@ const collectionschema=require('../models/collectionschema')
 const adminschema=require('../models/adminschema');
 
 
+
 //collection pending list
 exports.pending=async(req,res,next) => {
     await adminschema.find()
@@ -15,12 +16,7 @@ exports.pending=async(req,res,next) => {
         })
   
     });
-  
-  
   }
- 
-
-
 //create collection accecpted
 exports.accept=async(req,res)=>{
     const data=await adminschema.findOneAndDelete({_id:req.params.id})
@@ -28,7 +24,8 @@ exports.accept=async(req,res)=>{
 name:data.name,
 creatorName:data.creatorName,
 collectionImage:data.collectionImage,
-status:true
+status:true,
+owner:data.owner
     })
     .then(user => {console.log(user),
         res.send('collection accepted')})

@@ -4,10 +4,8 @@ const verify=require('../middleware/tokenverify')
 const bid = require('../controllers/bid');
 
 
-router.post('/auction',bid.auction)
-router.post('/biding',bid.biding)
-router.patch('/buy/',bid.buy)
-router.post('/transfer',bid.transfer)
+router.post('/auction/:id',bid.auction)
+router.patch('/biding/:id/:id1',bid.biding)
 
 
 module.exports=router

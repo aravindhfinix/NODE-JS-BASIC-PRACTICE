@@ -2,10 +2,17 @@ const express=require('express')
 const app=express();
 const collectionschema=require('../models/collectionschema')
 const adminschema=require('../models/adminschema')
+const userschema=require('../models/userschema')
 
 //create collection
 exports.create=async(req,res)=>{
-  await adminschema.create(req.body)
+  await adminschema.create({
+    name:req.body.name,
+    creatorName:req.body.creatorName,
+    collectionImage:req.body.collectionImage,
+    status:true,
+    owner:await userschema.findOne({walletaddress:req.body.owner})
+  })
         .then(result=>{
             console.log(result);
             res.send(result)

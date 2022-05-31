@@ -5,6 +5,7 @@ const adminschema=mongoose.Schema({
     creatorName:{type:String,required:true},
     collectionImage:{type:String},
     status:{type:String,default:"pending"},
+    owner:[{type:mongoose.Schema.Types.ObjectId,ref:'collection'}]
 
 })
 const admin=mongoose.model('admin',adminschema)
