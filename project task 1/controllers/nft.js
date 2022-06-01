@@ -7,10 +7,11 @@ const collectinschema=require('../models/collectionschema')
 exports.create=async(req,res)=>{
   
   const collection=await collectinschema.findOne({name:req.body.nftCollection})
+  console.log(req.file)
   await nftschema.create({
     name:req.body.name,
     description:req.body.name,
-    nftImage:req.body.nftImage,
+    nftImage:req.file,
     nftCollection:collection,
     status:req.body.status,
     price:req.body.price,

@@ -1,9 +1,9 @@
 const mongoose=require('mongoose')
 
 const nftschema=mongoose.Schema({
-    name:{type:String,required:true},
+    name:{type:String},
     description:{type:String},
-    nftImage:{type:String},
+    nftImage:[{type:String,default:"no image"}],
     nftCollection:[{type:mongoose.Schema.Types.ObjectId,ref:'collection'}],
     status:{type:Boolean},
     price:{type:Number},
