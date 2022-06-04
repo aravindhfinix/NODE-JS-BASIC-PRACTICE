@@ -5,7 +5,8 @@ const bid = require('../controllers/bid');
 
 
 router.post('/auction/:id',bid.auction)
-router.patch('/biding/:id/:id1',bid.biding)
-
-
+router.post('/bidingtime/:id',bid.bidingtime)
+router.post('/biding/:id/:id1',bid.biding)
+router.post('/sold/:id/:id1',bid.sold)
+ 
 module.exports=router

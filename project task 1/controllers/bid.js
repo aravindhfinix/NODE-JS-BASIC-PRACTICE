@@ -3,6 +3,7 @@ const nftschema=require('../models/nftschema')
 const bidschema=require('../models/bidschema')
 const collectionschema=require('../models/collectionschema')
 const userschema=require('../models/userschema')
+const { reset } = require('nodemon')
 
 
 exports.auction=async(req,res)=>{
@@ -29,55 +30,76 @@ exports.auction=async(req,res)=>{
 
 }
 
-exports.biding=async(req,res)=>{
-const data=await userschema.findById({_id:req.params.id1})
-const data1=await bidschema.find(req.params.id)
-const data3=await collectionschema.find({owner:req.body.id1})
-if(data1.bidingtime===data1.endingtime){
-const data2=await bidschema.findByIdAndUpdate({_id:req.params.id},{issold:true})
-if(data2.issold===true){
-await nftschema.create(
-    {
-    name:req.body.name,
-    description:data1.name,
-    nftImage:data1.nftImage,
-    nftCollection:data3,
-    status:true,
-    price:data1.price
-    }
-)
-}
-}
-else{
-if(data1.startingtime>=req.body.bidingtime){
-if(data1.endingtime<req.body.bidingtime){
-if(data1.price<req.body.price){
-await bidschema.updateOne({biders:data},{price:req.body.price})
-
-
+exports.bidingtime=async(req,res)=>{
+    await bidschema.findByIdAndUpdate(req.params.id,{
+        startingtime:req.body.startingtime,
+        endingtime:req.body.endingtime
+    })
     .then(result=>{
         console.log(result);
         res.send(result)
     })
     .catch(err=>{console.log(err.message)
         res.send(err.message)})
+}
+
+exports.biding=async(req,res)=>{
+  
+const data=await userschema.findById(req.params.id1)
+const data1=await bidschema.findByIdAndUpdate(req.params.id,{bidingtime:Date.now()})
+
+if(data1.endingtime<=data1.bidingtime)
+{if(data1.isSold===false){res.send('already sold')}
+else{
+await bidschema.findByIdAndUpdate({_id:req.params.id},{isSold:true})
+res.send(`action ended nft sold to ${data.name}`)
+}}
+else{
+if(data1.startingtime<data1.bidingtime){
+if(data1.price<req.body.price){
+await bidschema.findOneAndUpdate({_id:req.params.id},{$set:{
+    biders:data,
+    price:req.body.price}})
+    .then(result=>{
+        console.log(result);
+        res.send('bid is made')
+    })
+    .catch(err=>{console.log(err.message)
+        res.send(err.message)})
     }
     else{
         res.send('invalid bid amound')
-        .catch(err=>{console.log(err.message)
-            res.send(err.message)})
     }
-}else{
-    res.send('bid has ended')
-    .catch(err=>{console.log(err.message)
-        res.send(err.message)})
-}
   
 }else{
     res.send('bid has not started')
-    .catch(err=>{console.log(err.message)
-        res.send(err.message)})
 }
 }}
 
-
+exports.sold=async(req,res)=>{
+   const data2=await bidschema.findById({_id:req.params.id})
+   const data3=await collectionschema.find({owner:req.params.id1})
+    if(data2.isSold===true){ 
+        await nftschema.create(
+            {
+            name:data2.name,
+            description:data2.description,
+            nftImage:data2.nftImage,
+            nftCollection:data3,
+            status:true,
+            price:data2.price,
+            isSold:false
+            }
+        ) 
+        
+        .then(result=>{
+            console.log(result);
+            res.send(result)
+        })
+        .catch(err=>{console.log(err.message)
+            res.send(err.message)})
+        }
+        else{
+            res.send('not sold')
+        }
+        }

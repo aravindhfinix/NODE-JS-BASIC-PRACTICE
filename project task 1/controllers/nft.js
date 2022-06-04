@@ -10,8 +10,8 @@ exports.create=async(req,res)=>{
   console.log(req.file)
   await nftschema.create({
     name:req.body.name,
-    description:req.body.name,
-    nftImage:req.file,
+    description:req.body.description,
+    nftImage:req.file.originalname,
     nftCollection:collection,
     status:req.body.status,
     price:req.body.price,

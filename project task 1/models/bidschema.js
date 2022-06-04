@@ -16,7 +16,7 @@ const bidschema=mongoose.Schema({
     startingtime:{type:Date},
     endingtime:{type:Date},
     bidingtime:{type:Date,default:Date.now},
-    biders:[{type:mongoose.Schema.Types.ObjectId,ref:'user'}]
-})
+    biders:{type:mongoose.Schema.Types.ObjectId,ref:'users'}
+}) 
 const bid=mongoose.model('auction',bidschema)
 module.exports=bid
