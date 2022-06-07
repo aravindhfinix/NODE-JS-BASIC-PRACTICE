@@ -3,6 +3,7 @@ const todoschema=require('../models/todoschema')
 const userschema=require('../models/userschema')
 const cron=require('node-cron')
 const nodemailer=require('nodemailer')
+const todo = require('../models/todoschema')
 
 //create task
 exports.create=async(req,res)=>{
@@ -57,41 +58,74 @@ exports.previous=async(req,res)=>{
 
 //send mail for task status
 exports.mail=async(req,res)=>{
-   const list=await todoschema.find()
-   const user=await userschema.findById(list.username)
-   console.log(list)
-   res.send(user)
-   .then(result=>{
- 
-    //   cron.schedule('1-5 * * * *', () => {
-var transporter = nodemailer.createTransport({
-service: 'gmail',
-auth: {
-user: 'aravindhfinix.fsd@gmail.com',
-pass: 'aravindh@IT1'
-}
-});
-var mailOptions = {
-from: 'aravindhfinix.fsd@gmail.com',
-to:user.email,
-subject: 'task ',
-html: `pending task for${user.name} is ${list.status}</h1> `
-};
+todoschema.aggregate([{
+    $lookup: {
+        from: "users",
+        localField: "username",
+        foreignField: "_id",
+        as: "uemail"
+    }
+}, {
+    $unwind: "$uemail"}
+])
 
-transporter.sendMail(mailOptions, function(error, info){
-if (error) {
-console.log(error);
-} 
-else {
-console.log('Email sent: ' + info.response);
-res.send('Email sent: ' + info.response);
-}
-})
-// })
-} )
-. catch(err=>{
-   res.send(err.message)
-}
-)
+.then(result=>{
+    // setInterval(()=>{
+    cron.schedule('0 0 18 * * *',()=>{
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+        user: 'aravindhfinix.fsd@gmail.com',
+        pass: ''
+        }
+        })
+        for(var i in result){
+         
+            if(result[i].status===false){
+                console.log('hi')
+        var mailOptions = {
+        from: 'aravindhfinix.fsd@gmail.com',
+        to:result[i].uemail.email,
+        subject: 'task ',
+        html: `pending task for${result[i].uemail.name} is not completed try to complete it as soon as possible</h1> `
+        }
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+            console.log(error);
+            } 
+            else {
+            console.log('Email sent: ' + info.response);
+            res.send('Email sent: ' + info.response);
+            }
+            })}
+        else{
+            console.log('hello')
 
+            var mailOptions = {
+                from: 'aravindhfinix.fsd@gmail.com',
+                to:result=[i].uemail.email,
+                subject: 'task ',
+                html: `your task for${result[i].uemail.name} is completed well done</h1> `
+
+        }
+          
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+            console.log(error);
+            } 
+            else {
+            console.log('Email sent: ' + info.response);
+            res.send('Email sent: ' + info.response);
+            }
+            })
+    
+    }}
+      
+        
+     })
+        } )
+        . catch(err=>{
+           res.send(err.message)
+        }
+        )
 }

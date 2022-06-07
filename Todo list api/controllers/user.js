@@ -26,7 +26,7 @@ exports.signup=async(req,res)=>{
                     service: 'gmail',
                     auth: {
                       user: 'aravindhfinix.fsd@gmail.com',
-                      pass: 'gujkymcuxojniuex'
+                      pass: ''
                     }
                   });
                   
