@@ -1,9 +1,8 @@
-const express=require('express')
-const todoschema=require('../models/todoschema')
-const userschema=require('../models/userschema')
+const todoschema=require('../../models/todoschema')
+const userschema=require('../../models/userschema')
 const cron=require('node-cron')
 const nodemailer=require('nodemailer')
-const todo = require('../models/todoschema')
+require('dotenv').config()
 
 //create task
 exports.create=async(req,res)=>{
@@ -19,70 +18,101 @@ exports.create=async(req,res)=>{
 .catch(errors=>{res.send(errors.message)})}
 
 //update task
-exports.update=async(req,rea)=>{
+exports.update=async(req,res)=>{
     await todoschema.findByIdAndUpdate(req.params.id,{
         taskdetailes:req.body.taskdetailes,
-        taskstatus:req.body.taskstatus,
+        status:req.body.status,
         tasktiming:req.body.tasktiming})
     
 
-.then(results=>{res.send(results)})
+.then(results=>{
+if(!results){
+    res.status(404).send('not found')
+}else{
+    res.send(results)
+}
+})
 .catch(errors=>{res.send(errors.message)})} 
 
 //delete task
 exports.delete=async(req,res)=>{
 
-    await todoschema.findByIdAndDelete(req.params.id)
+await todoschema.findByIdAndDelete(req.params.id)
 
-    
-.then(results=>{res.send(results)})
+.then(results=>{
+if(!results){
+    res.status(404).send('not found')
+}
+else{
+    res.send(results)
+}
+})
 .catch(errors=>{res.send(errors.message)})
 }
 
 //comment task
 exports.comment=async(req,res)=>{
-    await todoschema.findByIdAndUpdate(req.params.id,{comment:req.body.comment})
     
-
-.then(results=>{res.send(results)})
-.catch(errors=>{res.send(errors.message)})} 
+await todoschema.findByIdAndUpdate(req.params.id,{comment:req.body.comment})
+    
+.then(results=>{
+if(!results)
+{
+    res.status(404).send('not found')
+}
+else
+{
+    res.send(results)
+}
+})
+.catch(errors=>{res.send(errors.message)})
+} 
 
 //see previous tasks
 exports.previous=async(req,res)=>{
-    await todoschema.find({tasktiming:req.body.tasktiming})
     
-.then(results=>{res.send(results)})
+await todoschema.find({tasktiming:req.body.tasktiming})
+    
+.then(results=>{
+if(!results)
+{
+    res.status(404).send('not found')
+}
+else
+{
+    res.send(results)
+}
+})
 .catch(errors=>{res.send(errors.message)})
-
 }
 
 //send mail for task status
 exports.mail=async(req,res)=>{
-todoschema.aggregate([{
+todoschema.aggregate([
+    {
     $lookup: {
         from: "users",
         localField: "username",
         foreignField: "_id",
         as: "uemail"
-    }
-}, {
-    $unwind: "$uemail"}
+    }}, 
+{$unwind: "$uemail"}
 ])
 
 .then(result=>{
     // setInterval(()=>{
-    cron.schedule('0 0 18 * * *',()=>{
+    // cron.schedule('0 0 18 * * *',()=>{
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
         user: 'aravindhfinix.fsd@gmail.com',
-        pass: ''
+        pass: process.env.EM_PASS
         }
         })
         for(var i in result){
          
             if(result[i].status===false){
-                console.log('hi')
+              
         var mailOptions = {
         from: 'aravindhfinix.fsd@gmail.com',
         to:result[i].uemail.email,
@@ -95,11 +125,10 @@ todoschema.aggregate([{
             } 
             else {
             console.log('Email sent: ' + info.response);
-            res.send('Email sent: ' + info.response);
+           res.send('EOD status sent ')
             }
             })}
         else{
-            console.log('hello')
 
             var mailOptions = {
                 from: 'aravindhfinix.fsd@gmail.com',
@@ -115,14 +144,15 @@ todoschema.aggregate([{
             } 
             else {
             console.log('Email sent: ' + info.response);
-            res.send('Email sent: ' + info.response);
+            res.send('EOD STATUS SENT')
+               
             }
             })
     
     }}
       
         
-     })
+    //  })
         } )
         . catch(err=>{
            res.send(err.message)

@@ -1,16 +1,17 @@
-const express=require('express')
-const app=express();
 const nodemailer=require('nodemailer');
-const userschema=require('../models/userschema')
+const userschema=require('../../models/userschema')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
+require('dotenv').config()
 
 //SIGNUP A NEW USER AND SEND OTP
 exports.signup=async(req,res)=>{
+
   var otp=Math.random()
     otp=otp*10000
     otp=parseInt(otp)
-      if(req.bodypassword===req.body.confirmpassword){
+      if(req.bodypassword===req.body.confirmpassword)
+      {
           await bcrypt.hash(req.body.password,10,(error,hash)=>{
            userschema.create({
               name:req.body.name,
@@ -19,14 +20,14 @@ exports.signup=async(req,res)=>{
               confirmpassword:hash,
               otp:otp
                } )
-               .then(result=>{
-                  console.log(result);
-                  res.send(result)
-                  var transporter = nodemailer.createTransport({
+      .then(result=>{
+               console.log(result);
+               res.send(result)
+                 var transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
                       user: 'aravindhfinix.fsd@gmail.com',
-                      pass: ''
+                      pass: process.env.EM_PASS
                     }
                   });
                   
@@ -46,27 +47,36 @@ exports.signup=async(req,res)=>{
                     }
                   })
               })
-              .catch(err=>{console.log(err.message)
+        .catch(err=>{console.log(err.message)
               res.send(err.message)})
-      })}
-      else{res.send('password not matched')}}
+      })
+      }
+      else
+      {
+        res.send('password not matched')
+      }
+
+  }
   
   
 //VERIFY OTP PAGE
   exports.otpverify=async(req,res)=>{
+
    const otp= await userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
-      if(req.body.otp==otp.otp){
+      if(req.body.otp==otp.otp)
+      {
         res.status(201).send('signup success')
       }
-      else{
+      else
+      {
         res.status(500).send("invalid otp")
       }
 
   }
   //LOGIN USER AND CREATE TOKEN
   exports.login=async(req,res,next) => {
-    await userschema.find({email : req.body.email})
-    .exec()
+    
+    await userschema.findOne({email : req.body.email})
     .then(user => {
         if(user.length <1){
             return res.status(401).json({
@@ -75,23 +85,21 @@ exports.signup=async(req,res)=>{
             });
             
         }
-        bcrypt.compare(req.body.password,user[0].password,(err,result) =>{
+        bcrypt.compare(req.body.password,user.password,(err,result) =>{
             
-            if(result){
+            if(result)
+            {
                const token = jwt.sign({
-                    email:user[0].email,
-                    userId : user[0]._id
-                },'secret key',
+                    email:user.email,
+                    userId : user._id
+                },process.env.SECRET_KEY,
                 {
                     expiresIn : "1h"
                 });
-                return res.status(200).json({
-                    message : "Auth Successful",
-                    token : token
-                })
+                return res.send(`bearer ${token}`)
             }
             res.status(401).json({
-                message :'Invalid Password  '
+                message :'password invalid'
             })
   
         });   
@@ -111,14 +119,31 @@ exports.signup=async(req,res)=>{
 exports.update=async(req,res)=>{
     const id = req.params.id
     await userschema.findOneAndUpdate({_id:id},{$set:req.body} )
-    .then(results=>{res.send(results)})
+    .then(results=>{
+      if(!results)
+      {
+      res.status(404).send('not found')
+      }
+      else
+      {
+      res.send(results)
+      }
+})
     .catch(errors=>{res.send(errors.message)})
 }
 //delete user
 exports.delete=async(req,res)=>{
     const id = req.params.id
     await userschema.deleteOne({_id:id} )
-    .then(results=>{res.send(results)})
+    .then(results=>{
+      if(!results)
+      {
+      res.status(404).send('not found')
+      }
+      else
+      {
+      res.send(results)
+      }
+    })
     .catch(errors=>{res.send(errors.message)})
-
 }

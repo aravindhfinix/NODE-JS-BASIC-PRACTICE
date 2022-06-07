@@ -9,9 +9,7 @@ mongoose.connect("mongodb://localhost/todo")
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-app.get('/',(req,res)=>{
-    res.send('welcome to todo')
-})
+app.get('/',(req,res)=>{res.send('welcome to todo')})
 app.use('/user', userRoutes)
 app.use('/todo', todoRoutes)
 
