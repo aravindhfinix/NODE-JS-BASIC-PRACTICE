@@ -10,5 +10,5 @@ const todoschema=mongoose.Schema({
     comment:{type:String}
 
 }) 
-const todo=mongoose.model('task_list',todoschema)
+const todo=mongoose.model('task list',todoschema)
 module.exports=todo

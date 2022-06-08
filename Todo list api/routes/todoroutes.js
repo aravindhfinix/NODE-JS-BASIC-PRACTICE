@@ -7,7 +7,7 @@ require('../middleware/passport')(passport)
 
 
 router.post('/create', passport.authenticate('jwt',{session:false}),todo.create)
-router.get('/previous',verify,todo.previous)
+router.get('/previous',todo.previous)
 router.post('/update/:id',todo.update)
 router.post('/delete/:id',todo.delete)
 router.post('/comment/:id',todo.comment)
