@@ -55,10 +55,12 @@ require('dotenv').config()
 //otp verify
 
 exports.otplogin=async(req,res)=>{
-  await userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
+ 
+  await userschema.findOne({email:req.body.email})
   .then(result=>{
   if(result.otp===req.body.otp)
   {
+userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
 const token = jwt.sign({
   email:result.email
 },process.env.SECRET_KEY,
@@ -70,6 +72,10 @@ return res.status(200).json({
   message : "Auth Successful",
   token : token
 })
+}
+else
+{
+res.send('wrong otp try again')
 }
 })
 }

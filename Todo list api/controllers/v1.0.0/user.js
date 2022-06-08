@@ -62,9 +62,10 @@ exports.signup=async(req,res)=>{
 //VERIFY OTP PAGE
   exports.otpverify=async(req,res)=>{
 
-   const otp= await userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
+   const otp= await userschema.findOne({email:req.body.email})
       if(req.body.otp==otp.otp)
-      {
+     {
+        userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
         res.status(201).send('signup success')
       }
       else
