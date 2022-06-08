@@ -29,7 +29,7 @@ exports.update=async(req,res)=>{
 if(!results){
     res.status(404).send('not found')
 }else{
-    await todoschema.findByIdAndUpdate(req.params.id,{taskedited:Date.now()})
+    todoschema.findByIdAndUpdate(req.params.id,{taskedited:Date.now()})
     res.send(results)
 }
 })
