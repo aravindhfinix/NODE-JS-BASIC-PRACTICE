@@ -7,13 +7,16 @@ const userSchema=new mongoose.Schema({
         unique:true,
         lowercase:true    
     },
-    name:{type:String},
+    name:{type:String,
+        unique:true,
+        required:true
+    },
     password:{
         type:String,
         required:true,
         minlength:6
     },
-    confirmpassword:{
+    confirmPassword:{
         type:String,
         required:true,
         minlength:6
@@ -21,5 +24,5 @@ const userSchema=new mongoose.Schema({
     otp:{type:Number},
 });
 
-const userschema=mongoose.model('users',userSchema )
-module.exports=userschema;
+const user=mongoose.model('users',userSchema )
+module.exports=user

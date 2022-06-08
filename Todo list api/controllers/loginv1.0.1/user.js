@@ -1,5 +1,5 @@
-const nodemailer=require('nodemailer');
-const userschema=require('../../models/userschema')
+const nodeMailer=require('nodemailer');
+const userSchema=require('../../models/userschema')
 const jwt=require('jsonwebtoken');
 
 
@@ -8,21 +8,21 @@ const jwt=require('jsonwebtoken');
     var otp=Math.random()
     otp=otp*10000
     otp=parseInt(otp)
-    await userschema.findOneAndUpdate({email:req.body.email},{otp:otp})
+    await userSchema.findOneAndUpdate({email:req.body.email},{otp:otp})//loging in with email only
     .then(user => {
      
-            if(user)
+            if(user)                                                   //if user sending otp to user email
             { 
-              var transporter = nodemailer.createTransport({
+              var transporter = nodeMailer.createTransport({
               service: 'gmail',
               auth: {
-                user: 'aravindhfinix.fsd@gmail.com',
+                user: process.env.EMAIL,
                 pass: process.env.EM_PASS
               }
             });
             
             var mailOptions = {
-              from: 'aravindhfinix.fsd@gmail.com',
+              from: process.env.EMAIL,
               to:req.body.email,
               subject: 'otp for login',
               html: `your otp for login is ${otp} `
@@ -52,18 +52,18 @@ const jwt=require('jsonwebtoken');
   
   }; 
  
-//otp verify
+//OTP VERIFY AND LOGIN
 
-exports.otplogin=async(req,res)=>{
+exports.otpLogin=async(req,res)=>{
  
-  await userschema.findOne({email:req.body.email})
-  .then(result=>{
-  if(result.otp===req.body.otp)
+  await userSchema.findOne({email:req.body.email})
+  .then(async result=>{
+  if(result.otp===req.body.otp)                                    
   {
-userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
-const token = jwt.sign({
-  email:result.email
-},process.env.SECRET_KEY,
+   await userSchema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
+    const token = jwt.sign({
+    email:result.email
+    },process.env.SECRET_KEY,
 {
   algorithm : "HS256",
   expiresIn : "1h"

@@ -1,37 +1,40 @@
-const nodemailer=require('nodemailer');
-const userschema=require('../../models/userschema')
+const nodeMailer=require('nodemailer');
+const userSchema=require('../../models/userschema')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 
 //SIGNUP A NEW USER AND SEND OTP
-exports.signup=async(req,res)=>{
+exports.signUp=async(req,res)=>{
 
   var otp=Math.random()
     otp=otp*10000
     otp=parseInt(otp)
-      if(req.bodypassword===req.body.confirmpassword)
+      if(req.body.password===req.body.confirmPassword)          //comparing password and confirm password and creating the user
       {
           await bcrypt.hash(req.body.password,10,(error,hash)=>{
-           userschema.create({
+           userSchema.create({
               name:req.body.name,
               email:req.body.email,
               password:hash,
-              confirmpassword:hash,
+              confirmPassword:hash,
               otp:otp
                } )
       .then(result=>{
                console.log(result);
-               res.send(result)
-                 var transporter = nodemailer.createTransport({
+               res.json({
+                 status:'created',
+                 user:result
+               })
+                 var transporter = nodeMailer.createTransport({
                     service: 'gmail',
                     auth: {
-                      user: 'aravindhfinix.fsd@gmail.com',
+                      user: process.env.EMAIL,
                       pass: process.env.EM_PASS
                     }
                   });
                   
-                  var mailOptions = {
-                    from: 'aravindhfinix.fsd@gmail.com',
+                  var mailOptions = {                       //sending otp for users email
+                    from: process.env.EMAIL,
                     to:req.body.email,
                     subject: 'otp for registration',
                     html: `messing sending to host<h1>the otp for${req.body.name} is ${otp}</h1> `
@@ -59,32 +62,30 @@ exports.signup=async(req,res)=>{
   
   
 //VERIFY OTP PAGE
-  exports.otpverify=async(req,res)=>{
+  exports.otpVerify=async(req,res)=>{
 
-   const otp= await userschema.findOne({email:req.body.email})
-      if(req.body.otp==otp.otp)
+    await userSchema.findOne({email:req.body.email})
+  
+    .then(async results=>{
+      if(req.body.otp=results.otp)                 //have to verify the otp to login
      {
-        userschema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
+      await userSchema.findOneAndUpdate({email:req.body.email},{$unset:{otp:req.body.otp}})
+ 
         res.status(201).send('signup success')
       }
       else
       {
         res.status(500).send("invalid otp")
       }
-
+    })
+    .catch(errors=>{res.send(errors.message)})
   }
-  //LOGIN USER AND CREATE TOKEN
+  //LOGIN USER AND CREATE TOKEN ONLY AFTER OTP VERIFICATION
   exports.login=async(req,res,next) => {
     
-    await userschema.findOne({email : req.body.email})
+    await userSchema.findOne({email:req.body.email})
     .then(user => {
-        if(user.length <1){
-            return res.status(401).json({
-                message : 'Auth failed'
-  
-            });
-            
-        }
+        if(user.otp===undefined){                      //if the otp is verified user is loggedin
         bcrypt.compare(req.body.password,user.password,(err,result) =>{
             
             if(result)
@@ -102,7 +103,10 @@ exports.signup=async(req,res)=>{
                 message :'password invalid'
             })
   
-        });   
+        })}
+        else{                                       //if otp verification is not done
+          res.send('otp verification not done')
+        };   
     })  
     .catch(err => {
         console.log(err);
@@ -118,15 +122,15 @@ exports.signup=async(req,res)=>{
 //update user details
 exports.update=async(req,res)=>{
     const id = req.params.id
-    await userschema.findOneAndUpdate({_id:id},{$set:req.body} )
+    await userSchema.findOneAndUpdate({_id:id},{$set:req.body} )
     .then(results=>{
       if(!results)
       {
-      res.status(404).send('not found')
+       res.status(404).send('not found')
       }
       else
       {
-      res.send(results)
+       res.send(results)
       }
 })
     .catch(errors=>{res.send(errors.message)})
@@ -134,7 +138,7 @@ exports.update=async(req,res)=>{
 //delete user
 exports.delete=async(req,res)=>{
     const id = req.params.id
-    await userschema.deleteOne({_id:id} )
+    await userSchema.deleteOne({_id:id} )
     .then(results=>{
       if(!results)
       {
@@ -142,7 +146,7 @@ exports.delete=async(req,res)=>{
       }
       else
       {
-      res.send(results)
+      res.send('deleted succesfully')
       }
     })
     .catch(errors=>{res.send(errors.message)})
