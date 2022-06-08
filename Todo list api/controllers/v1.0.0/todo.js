@@ -22,15 +22,16 @@ exports.update=async(req,res)=>{
     await todoschema.findByIdAndUpdate(req.params.id,{
         taskdetailes:req.body.taskdetailes,
         status:req.body.status,
-        tasktiming:req.body.tasktiming})
+        tasktiming:req.body.tasktiming,
+        taskedited:Date.now()
+    })
     
 
 .then(results=>{
 if(!results){
     res.status(404).send('not found')
 }else{
-    todoschema.findByIdAndUpdate(req.params.id,{taskedited:Date.now()})
-    res.send(results)
+    res.send('task updated')
 }
 })
 .catch(errors=>{res.send(errors.message)})} 
@@ -51,7 +52,7 @@ else{
 .catch(errors=>{res.send(errors.message)})
 }
 
-//comment task
+//comment on task
 exports.comment=async(req,res)=>{
     
 await todoschema.findByIdAndUpdate(req.params.id,{comment:req.body.comment})
