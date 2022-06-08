@@ -2,7 +2,6 @@ const nodemailer=require('nodemailer');
 const userschema=require('../../models/userschema')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
-require('dotenv').config()
 
 //SIGNUP A NEW USER AND SEND OTP
 exports.signup=async(req,res)=>{

@@ -1,7 +1,7 @@
 const nodemailer=require('nodemailer');
 const userschema=require('../../models/userschema')
 const jwt=require('jsonwebtoken');
-require('dotenv').config()
+
 
   //LOGIN USER AND CREATE TOKEN
   exports.login=async(req,res,next) => {

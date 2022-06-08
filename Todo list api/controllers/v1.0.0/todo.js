@@ -2,7 +2,7 @@ const todoschema=require('../../models/todoschema')
 const userschema=require('../../models/userschema')
 const cron=require('node-cron')
 const nodemailer=require('nodemailer')
-require('dotenv').config()
+
 
 //create task
 exports.create=async(req,res)=>{
