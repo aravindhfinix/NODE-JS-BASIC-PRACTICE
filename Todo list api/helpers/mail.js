@@ -35,7 +35,7 @@ exports.sendMail = async (userMail,name,status) => {
                     var mailOptions = {
                             from: process.env.EMAIL,
                             to:userMail,
-                            subject: 'task ',
+                            subject: 'otp ',
                             html: `the otp for user ${userName} is ${otp} `
                      }
                    

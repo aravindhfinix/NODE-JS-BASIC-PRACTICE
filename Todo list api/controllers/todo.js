@@ -178,7 +178,7 @@ await todoSchema.aggregate([
 
 .then(result=>{
     console.log(result)
-    cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 24 hrs from started time
+    cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 23 hrs from started time
   
         for(var i in result){
             const name=result[i].uemail.name
@@ -188,7 +188,7 @@ await todoSchema.aggregate([
             sendMail(email,name,status)              //invoking mail function
             console.log(email)
             }
-            res.send('mail sent')
+            res.send('EOD status sent')
       })
         } )
         . catch(err=>{
