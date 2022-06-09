@@ -1,7 +1,7 @@
 const todoSchema=require('../models/todoschema')
 const userSchema=require('../models/userschema')
 const cron=require('node-cron')
-const nodeMailer=require('nodemailer')
+const sendMail=require('../helpers/mail').sendMail
 
 
 //CREATING A TASK
@@ -177,62 +177,22 @@ await todoSchema.aggregate([
 ])
 
 .then(result=>{
-    
-    cron.schedule('00 00 */24 * * *',()=>{            //sheduled for every 24 hrs from started time
-    var transporter = nodeMailer.createTransport({
-        service: 'gmail',
-        auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EM_PASS
-        }
-        })
+    console.log(result)
+    cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 24 hrs from started time
+  
         for(var i in result){
-         
-            if(result[i].status===false){            //EOD message for pending task
-              
-               var mailOptions = {
-               from: process.env.EMAIL,
-               to:result[i].uemail.email,
-               subject: 'task ',
-               html: `pending task for${result[i].uemail.name} is not completed try to complete it as soon as possible</h1> `
-        }
-        transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-             console.log(error);
-            } 
-            else {
-            console.log('Email sent: ' + info.response);
-            res.send('EOD status sent ')
-            }
-            })}
-        else{                                       //EOD message for completed task
+            const name=result[i].uemail.name
+            const status=result[i].status
+            const email=result[i].uemail.email
 
-            var mailOptions = {
-                from: process.env.EMAIL,
-                to:result=[i].uemail.email,
-                subject: 'task ',
-                html: `your task for${result[i].uemail.name} is completed well done</h1> `
-
-        }
-          
-        transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-            console.log(error);
-            } 
-            else {
-            console.log('Email sent: ' + info.response);
-            res.send('EOD STATUS SENT')
-               
+            sendMail(email,name,status)              //invoking mail function
+            console.log(email)
             }
-            })
-    
-    }}
-      
-        
+            res.send('mail sent')
       })
         } )
         . catch(err=>{
            res.send(err.message)
         }
         )
-}
+} 

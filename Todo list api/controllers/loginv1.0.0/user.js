@@ -1,7 +1,7 @@
-const nodeMailer=require('nodemailer');
 const userSchema=require('../../models/userschema')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
+const userMail=require('../../helpers/mail').userMail
 
 //SIGNUP A NEW USER AND SEND OTP
 exports.signUp=async(req,res)=>{
@@ -11,10 +11,12 @@ exports.signUp=async(req,res)=>{
     otp=parseInt(otp)
       if(req.body.password===req.body.confirmPassword)          //comparing password and confirm password and creating the user
       {
+        const name=req.body.name
+        const email=req.body.email
           await bcrypt.hash(req.body.password,10,(error,hash)=>{
            userSchema.create({
-              name:req.body.name,
-              email:req.body.email,
+              name:name,
+              email:email,
               password:hash,
               confirmPassword:hash,
               otp:otp
@@ -25,29 +27,9 @@ exports.signUp=async(req,res)=>{
                  status:'created',
                  user:result
                })
-                 var transporter = nodeMailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                      user: process.env.EMAIL,
-                      pass: process.env.EM_PASS
-                    }
-                  });
-                  
-                  var mailOptions = {                       //sending otp for users email
-                    from: process.env.EMAIL,
-                    to:req.body.email,
-                    subject: 'otp for registration',
-                    html: `messing sending to host<h1>the otp for${req.body.name} is ${otp}</h1> `
-                  };
-                  
-                  transporter.sendMail(mailOptions, function(error, info){
-                    if (error) {
-                      console.log(error);
-                    } else {
-                      console.log('Email sent: ' + info.response);
-                      res.send('Email sent: ' + info.response);
-                    }
-                  })
+               
+               userMail(email,name,otp)
+
               })
         .catch(err=>{console.log(err.message)
               res.send(err.message)})
