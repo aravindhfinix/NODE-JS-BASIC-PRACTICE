@@ -3,8 +3,14 @@ const app=express();
 const userRoutes=require('./routes/userroutes')
 const todoRoutes=require('./routes/todoroutes')
 const mongoose=require('mongoose')
-mongoose.connect("mongodb://localhost/todo")
 require('dotenv').config()
+
+
+mongoose.connect("mongodb://localhost/todo",()=>{
+    const status=mongoose.connection.readyState
+    if (status===0){console.log("connection failed to db")}
+    if(status===1){console.log("successfully connected to db")}
+}) 
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());

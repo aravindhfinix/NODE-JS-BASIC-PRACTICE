@@ -8,8 +8,11 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 
-mongoose.connect("mongodb://localhost/book")
-if(1==2){console.log('hi')}
+mongoose.connect("mongodb://localhost/book",(error)=>{
+    const status=mongoose.connection.readyState
+    if (status===0){console.log("connection failed to db")}
+    if(status===1){console.log("successfully connected to db")}
+}) 
 //users adding to db
 app.post('/users/add',async(req,res)=>
 {
@@ -19,7 +22,7 @@ await schema.create(user)
 
     res.send(results)
 })
-.catch(errors=>{res.sen(errors.message)})
+.catch(errors=>{res.send(errors.message)})
 })
 //read users
 app.get('/users/find',async(req,res)=>
