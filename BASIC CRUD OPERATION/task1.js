@@ -1,13 +1,15 @@
 const express=require('express')
 const app=express();
 const mongoose=require('mongoose');
-const { find } = require('./sche/schema');
+const chalk=require('chalk')
+const chalkRainbow=require('chalk-rainbow')
 const schema=require('./sche/schema')
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 
 mongoose.connect("mongodb://localhost/book")
+if(1==2){console.log('hi')}
 //users adding to db
 app.post('/users/add',async(req,res)=>
 {
@@ -17,9 +19,7 @@ await schema.create(user)
 
     res.send(results)
 })
-.catch(errors=>{
-    res.send(errors.message)
-})
+.catch(errors=>{res.sen(errors.message)})
 })
 //read users
 app.get('/users/find',async(req,res)=>
@@ -33,8 +33,7 @@ app.get('/user/search/:id',async(req,res)=>{
     const user=req.params.id
     await schema.findById(user)
     .then(results=>{res.send(results)})
-    .catch(errors=>{res.send(errors.message)})
-
+    .catch(errors=>{console.log(chalk.red(errors.message))})
 })
 //update user details
 app.patch('/users/update/:id',async(req,res)=>{
@@ -53,5 +52,5 @@ app.delete('/user/delete/:id',async(req,res)=>{
 
 })
 
-app.listen(5000,()=>{console.log('server started')})
+app.listen(5000,()=>{console.log(chalkRainbow('server started'))})
 

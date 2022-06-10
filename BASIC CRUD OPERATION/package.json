@@ -5,12 +5,16 @@
   "main": "task1.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon task1"
+    "start": "nodemon task1",
+    "find":"jshint task1.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.1.2",
+    "chalk-rainbow": "^1.0.0",
     "express": "^4.17.3",
+    "jshint": "^2.13.4",
     "mongoose": "^6.2.8",
     "nodemon": "^2.0.15"
   }
