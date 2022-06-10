@@ -164,8 +164,12 @@ else{
 //EOD TASK STATUS EMAIL
 
 exports.mail=async(req,res)=>{
+
+    const date=new Date()
+    const todaysDate=date.toLocaleDateString()
     
 await todoSchema.aggregate([
+    {$match:{taskCreatedAt:todaysDate}},
     {
     $lookup: {
         from: "users",
