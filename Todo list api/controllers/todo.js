@@ -181,7 +181,7 @@ await todoSchema.aggregate([
 ])
 
 .then(result=>{
-    console.log(result)
+
     cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 23 hrs from started time
   
         for(var i in result){

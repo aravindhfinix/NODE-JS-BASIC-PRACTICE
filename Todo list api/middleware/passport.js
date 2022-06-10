@@ -11,7 +11,7 @@ const opts = {
     const Strategy=(new JwtStrategy(opts,(payload, done)=> {
      user.findOne({id:payload.sub})
         .then(result=>{if(result){
-            return done(null,'hi')}
+            return done(null,result)}
         else{
             return done(null,false)
         } })
