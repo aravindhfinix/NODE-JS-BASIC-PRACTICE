@@ -20,15 +20,10 @@ app.use('/user', userRoutes)
 app.use('/todo', todoRoutes)
 
 app.use((req, res, next) => {
-    const error =new Error("not found"); 
-    error.status = 404;
-    next(error);
-});
-app.use((error, req, res, next) => {
-    res.status(error.status || 500);
+    res.status(404);
     res.json({
         error: {
-            message: error.message
+            message: "requested page is not found"
         }
     });
 });
