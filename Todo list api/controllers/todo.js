@@ -2,7 +2,7 @@ const todoSchema=require('../models/todoschema')
 const userSchema=require('../models/userschema')
 const cron=require('node-cron')
 const sendMail=require('../helpers/mail').sendMail
-
+const dateToday=require('../helpers/date').todaysDate
 
 //CREATING A TASK
 
@@ -11,15 +11,14 @@ exports.create=async(req,res)=>{
     await userSchema.findOne({name:req.body.userName})
   
 .then(async results=>{
-    const date=new Date()
-    const todaysDate=date.toLocaleDateString()
+ 
      const task=await todoSchema.create({
         userName:req.body.userName,
         userId:results,
         taskName:req.body.taskName,
         taskNetailes:req.body.taskDetailes,
         taskDue:req.body.taskDue,
-        taskCreatedAt:todaysDate
+        taskCreatedAt:dateToday
     })
 
     res.json({
@@ -32,16 +31,15 @@ exports.create=async(req,res)=>{
 
 exports.update=async(req,res)=>{
     const date=new Date()
-    const todaysDate=date.toLocaleDateString()
-    const todaystime=date.toLocaleTimeString()
+        const todaysTime=date.toLocaleTimeString()
 
     await todoSchema.findByIdAndUpdate(req.params.id,{   //updating the following feilds with updated time and date
         taskDetailes:req.body.taskDetailes,
         status:req.body.status,
         taskDue:req.body.taskTiming,
         taskUpdatedAt:{
-            date:todaysDate,
-            time:todaystime
+            date:dateToday,
+            time:todaysTime
         }
     })
     
@@ -51,7 +49,7 @@ if(!results){
 }else{
     res.json({
         status:'task updated',
-        updatedAt:results.taskUpdatedAt
+        updatedAt:[results.taskUpdatedAt]
     
     })
 }
@@ -98,13 +96,10 @@ else
 //SEE TODAYS TASKS OR REQUIRED TASK BY STATUS
 
 exports.previous=async(req,res)=>{
-    const date=new Date()
-    const todaysDate=date.toLocaleDateString()
-    
-
+ 
   if(req.body.taskCreatedAt===undefined)   //default todays tasks
    {
-    await todoSchema.find({taskCreatedAt:todaysDate}) 
+    await todoSchema.find({taskCreatedAt:dateToday}) 
     
     .then(results=>{
     if(!results)
@@ -125,7 +120,7 @@ exports.previous=async(req,res)=>{
   {
      if(req.body.status===false)  //requested day pending tasks
      {
-        await todoSchema.find({taskCreatedAt:req.body.taskCreatedAt,status:false,userName:req.body.userName})
+        await todoSchema.find({taskCreatedAt:req.body.taskCreatedAt,status:false})
         .then(results=>{
             if(!results)
             {
@@ -142,7 +137,7 @@ exports.previous=async(req,res)=>{
             .catch(errors=>{res.send(errors.message)})
      }
 else{
-    await todoSchema.find({taskCreatedAt:req.body.taskCreatedAt,userName:req.body.userName})  //requested day tasks
+    await todoSchema.find({taskCreatedAt:req.body.taskCreatedAt})  //requested day tasks
     .then(results=>{
     if(!results)
     {
@@ -164,12 +159,8 @@ else{
 //EOD TASK STATUS EMAIL
 
 exports.mail=async(req,res)=>{
-
-    const date=new Date()
-    const todaysDate=date.toLocaleDateString()
-    
 await todoSchema.aggregate([
-    {$match:{taskCreatedAt:todaysDate}},
+    {$match:{taskCreatedAt:dateToday}},
     {
     $lookup: {
         from: "users",

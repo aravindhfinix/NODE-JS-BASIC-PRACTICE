@@ -3,6 +3,8 @@ const app=express();
 const userRoutes=require('./routes/userroutes')
 const todoRoutes=require('./routes/todoroutes')
 const mongoose=require('mongoose')
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 require('dotenv').config()
 
 
@@ -12,20 +14,15 @@ mongoose.connect("mongodb://localhost/todo",()=>{
     if(status===1){console.log("successfully connected to db")}
 }) 
 
-app.use(express.urlencoded({extended: false}));
-app.use(express.json());
+//MAIN ROUTES
 
 app.get('/',(req,res)=>{res.send('welcome to todo')})
 app.use('/user', userRoutes)
 app.use('/todo', todoRoutes)
 
+//404 ERROR IF REQUESTED URL
 app.use((req, res, next) => {
-    res.status(404);
-    res.json({
-        error: {
-            message: "requested page is not found"
-        }
-    });
+    res.status(404).json({error:"requested page not found"})
 });
 
 
