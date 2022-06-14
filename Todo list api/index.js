@@ -21,11 +21,10 @@ app.use('/user', userRoutes)
 app.use('/todo', todoRoutes)
 
 //404 ERROR IF REQUESTED URL
+
 app.use((req, res, next) => {
     res.status(404).json({error:"requested page not found"})
 });
-
-
 
 const port=process.env.PORT||3000
 app.listen(port,()=>{console.log(`server running at port ${port}`)})

@@ -13,6 +13,12 @@ mongoose.connect("mongodb://localhost/book",(error)=>{
     if (status===0){console.log("connection failed to db")}
     if(status===1){console.log("successfully connected to db")}
 }) 
+
+//welcome route
+app.get('/welcome',(req,res)=>{
+ res.send("welcome")
+})
+
 //users adding to db
 app.post('/users/add',async(req,res)=>
 {
@@ -49,7 +55,6 @@ app.patch('/users/update/:id',async(req,res)=>{
 app.delete('/user/delete/:id',async(req,res)=>{
     const id = req.params.id
     await schema.deleteOne({id:id} )
-    .exec()
     .then(results=>{res.send(results)})
     .catch(errors=>{res.send(errors.message)})
 

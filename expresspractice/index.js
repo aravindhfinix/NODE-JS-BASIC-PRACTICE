@@ -3,11 +3,14 @@ const Joi=require('joi')
 const app=express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
-const alert=require('alert')
+
 
 
 app.get('/',(req,res)=>{
-res.send("hi friends")
+        const date=new Date()
+        const date1=date.set
+console.log(date1)
+res.send('date')
 });
     app.get('/function',(req,res)=>
     {res.sendFile(`${__dirname}/main.html`)})
@@ -33,5 +36,5 @@ res.send("hi friends")
 const ownrouter=require("./myroute");
 app.use('/users',ownrouter)
 
-const port=process.env.PORT || 3000;
+const port=3000;
 app.listen(port,()=>console.log(`start the server at ${port}...`));
