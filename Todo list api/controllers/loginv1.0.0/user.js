@@ -76,10 +76,11 @@ exports.signUp=async(req,res)=>{
                     email:user.email,
                     userId : user._id
                 },process.env.SECRET_KEY,
-                {
+                {   
+                    algorithm : "HS256",
                     expiresIn : "1h"
                 });
-                return res.send(`bearer ${token}`)
+                return res.json({token:`bearer ${token}`})
             }
             res.status(401).json({
                 message :'password invalid'

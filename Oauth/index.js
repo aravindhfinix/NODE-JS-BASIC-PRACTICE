@@ -1,15 +1,33 @@
 const express=require('express');
 const passport=require('passport');
-const passportgoogle=require('passport-google-oauth20');
+const app=express()
+require('./oauth2')
 
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://www.example.com/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
+app.get( '/',
+  passport.authenticate( 'google', {
+    successRedirect: '/protected',
+    failureRedirect: '/auth/google/failure'
+  })
+);
+
+app.get('/log', (req, res) => {
+  res.send('<a href="/auth/google">Authenticate with Google</a>');
+});
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: [ 'email', 'profile' ] }
 ));
+
+
+app.get('/protected', (req, res) => {
+  res.send(`Hello`);
+});
+
+app.get('/auth/google/failure', (req, res) => {
+  res.send('Failed to authenticate..');
+});
+
+const port=process.env.PORT||3000
+app.listen(port,()=>{
+console.log(`server running at port ${port}`)
+})
