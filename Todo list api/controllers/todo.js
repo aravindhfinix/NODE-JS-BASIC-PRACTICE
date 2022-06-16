@@ -35,7 +35,7 @@ exports.update=async(req,res)=>{
 
     await todoSchema.findByIdAndUpdate(req.params.id,{   //updating the following feilds with updated time and date
         taskDetailes:req.body.taskDetailes,
-        status:req.body.status,
+         status:req.body.status,
         taskDue:req.body.taskTiming,
         taskUpdatedAt:{
             date:dateToday,
@@ -57,6 +57,7 @@ if(!results){
 .catch(errors=>{res.send(errors.message)})} 
 
 //DELETING A TASK
+
 exports.delete=async(req,res)=>{
 
 await todoSchema.deleteOne(req.params.id)
