@@ -14,12 +14,11 @@ exports.sendMail = async (userMail,name,status) => {
     var mailOptions = {
             from: process.env.EMAIL,
             to:userMail,
-            subject: 'task ',
+            subject: 'Task Status Report',
             html: `the status for task of ${name} is ${status} `
      }
    
     
-
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
          console.log(error);

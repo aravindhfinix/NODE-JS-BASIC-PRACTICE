@@ -1,6 +1,6 @@
 const express=require('express');
-const router = express.Router();
-const  todo = require ('../controllers/todo')
+const router= express.Router();
+const  todo= require ('../controllers/todo')
 const passport=require('passport')
 require('../middleware/passport')(passport)
 

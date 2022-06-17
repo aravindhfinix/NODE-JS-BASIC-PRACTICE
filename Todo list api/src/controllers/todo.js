@@ -1,6 +1,6 @@
+const cron=require('node-cron')
 const todoSchema=require('../models/todoschema')
 const userSchema=require('../models/userschema')
-const cron=require('node-cron')
 const sendMail=require('../helpers/mail').sendMail
 const dateToday=require('../helpers/date').todaysDate
 
@@ -20,18 +20,25 @@ exports.create=async(req,res)=>{
         taskDue:req.body.taskDue,
         taskCreatedAt:dateToday
     })
-
     res.json({
-           status:'task created',
-           task:task})
+           message:'task created',
+           task:task
         })
-.catch(errors=>{res.send(errors.message)})}
+    })
+
+ .catch(err => {
+           console.log(err);
+           res.status(500).json({
+           error : err.message
+            })
+        });
+    }
 
 //UPDATING A TASK
 
 exports.update=async(req,res)=>{
     const date=new Date()
-        const todaysTime=date.toLocaleTimeString()
+    const todaysTime=date.toLocaleTimeString()
 
     await todoSchema.findByIdAndUpdate(req.params.id,{   //updating the following feilds with updated time and date
         taskDetailes:req.body.taskDetailes,
@@ -54,7 +61,14 @@ if(!results){
     })
 }
 })
-.catch(errors=>{res.send(errors.message)})} 
+
+.catch(err => {
+    console.log(err);
+    res.status(500).json({
+        error : err.message
+    })
+});
+} 
 
 //DELETING A TASK
 
@@ -64,13 +78,19 @@ await todoSchema.deleteOne(req.params.id)
 
 .then(results=>{
 if(!results){
-    res.status(404).send('not found')
+    res.status(404).json({message:'task not found'})
 }
 else{
-    res.send('sucessfully deleted')
+    res.json({message:'sucessfully deleted'})
 }
 })
-.catch(errors=>{res.send(errors.message)})
+
+.catch(err => {
+    console.log(err);
+    res.status(500).json({
+        error : err.message
+    })
+});
 }
 
 //ADD COMMENT TO OUR TASK
@@ -82,16 +102,22 @@ await todoSchema.findByIdAndUpdate(req.params.id,{comment:req.body.comment})
 .then(results=>{
 if(!results)
 {
-    res.status(404).send('not found')
+    res.status(404).json({message:'task not found'})
 }
 else
 {
     res.json({
-        status:'comment added',
+        message:'comment added',
         commentMade:req.body.comment})
 }
 })
-.catch(errors=>{res.send(errors.message)})
+
+.catch(err => {
+    console.log(err);
+    res.status(500).json({
+        error : err.message
+    })
+});
 } 
 
 //SEE TODAYS TASKS OR REQUIRED TASK BY STATUS
@@ -105,54 +131,75 @@ exports.previous=async(req,res)=>{
     .then(results=>{
     if(!results)
     {
-        res.status(404).send('not found')
+        res.status(404).json({message:'task not found'})
     }
     else
     {
         res.json({
-            results:'found todays tasks',
+            message:'found todays tasks',
             TodaysTasks:results
         })
     }
     })
-    .catch(errors=>{res.send(errors.message)})
+
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error : err.message
+        })
+    });
   }
   else
   {
      if(req.body.status===false)  //requested day pending tasks
      {
         await todoSchema.find({taskCreatedAt:req.body.taskCreatedAt,status:false})
+
         .then(results=>{
             if(!results)
             {
-                res.status(404).send('not found')
+                res.status(404).json({message:'task not found'})
             }
             else
             {
                 res.json({
-                    results:'found requested day pending tasks',
+                    message:'found requested day pending tasks',
                     previousTasks:results
                 })
             }
             })
-            .catch(errors=>{res.send(errors.message)})
+
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error : err.message
+                })
+            });
      }
 else{
     await todoSchema.find({taskCreatedAt:req.body.taskCreatedAt})  //requested day tasks
+
     .then(results=>{
     if(!results)
     {
-        res.status(404).send('not found')
+        res.status(404).json({message:'task not found'})
     }
     else
     {
         res.json({
-            results:'found requested day tasks',
+            message:'found requested day tasks',
             previousTasks:results
         })
     }
     })
-    .catch(errors=>{res.send(errors.message)})
+
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error : err.message
+        })
+   });
+  
   }
 }
 }
@@ -160,6 +207,7 @@ else{
 //EOD TASK STATUS EMAIL
 
 exports.mail=async(req,res)=>{
+
 await todoSchema.aggregate([
     {$match:{taskCreatedAt:dateToday}},
     {
@@ -173,22 +221,25 @@ await todoSchema.aggregate([
 ])
 
 .then(result=>{
-
+    console.log(result)
     cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 23 hrs from started time
-  
+
         for(var i in result){
             const name=result[i].uemail.name
             const status=result[i].status
             const email=result[i].uemail.email
-
             sendMail(email,name,status)              //invoking mail function
             console.log(email)
             }
-            res.send('EOD status sent')
+            res.json({message:'EOD status sent'})
       })
         } )
-        . catch(err=>{
-           res.send(err.message)
-        }
-        )
+        
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error : err.message
+            })
+        });
+      
 } 

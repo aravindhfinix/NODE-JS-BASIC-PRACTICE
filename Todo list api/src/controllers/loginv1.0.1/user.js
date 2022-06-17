@@ -4,20 +4,20 @@ const userMail=require('../../helpers/mail').userMail
 
   //LOGIN USER AND CREATE TOKEN
   exports.login=async(req,res,next) => {
-
     var otp=Math.random()
     otp=otp*10000
     otp=parseInt(otp)
 
-    await userSchema.findOneAndUpdate({email:req.body.email},{$set:{otp:otp}})//loging in with email only
+    await userSchema.findOneAndUpdate({email:req.body.email},{$set:{otp:otp}})    //loging in with only email input
+
     .then(user => {
-     
             if(user)                                                   //if user sending otp to user email
             { 
              userMail(user.email,user.name,otp)
             }
-            res.send('mail sent')
+            res.json({message:'mail sent'})
            })  
+
     .catch(err => {
         console.log(err);
         res.status(500).json({
@@ -34,6 +34,7 @@ const userMail=require('../../helpers/mail').userMail
 exports.otpLogin=async(req,res)=>{
  
   await userSchema.findOne({email:req.body.email})
+
   .then(async result=>{
   if(result.otp===req.body.otp)                                    
   {
@@ -52,7 +53,16 @@ return res.status(200).json({
 }
 else
 {
-res.send('wrong otp try again')
+res.json({message:'wrong otp try again'})
 }
 })
+
+.catch(err => {
+  console.log(err);
+  res.status(500).json({
+      error : err.message
+  })
+
+});
+
 }

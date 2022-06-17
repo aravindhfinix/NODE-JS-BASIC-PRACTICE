@@ -1,11 +1,11 @@
 const express=require('express');
-const app=express();
-const userRoutes=require('./routes/userroutes')
-const todoRoutes=require('./routes/todoroutes')
 const mongoose=require('mongoose')
-require('dotenv').config()
+const app=express();
+const userRoutes=require('./routes/userRoutes')
+const todoRoutes=require('./routes/todoRoutes')
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+require('dotenv').config()
 
 
 mongoose.connect("mongodb://localhost/todo",()=>{
@@ -16,8 +16,7 @@ mongoose.connect("mongodb://localhost/todo",()=>{
 
 //MAIN ROUTES
 
-app.get('/',(req,res)=>{
-    res.send('welcome to To-Do app')})
+app.get('/',(req,res)=>{res.send('welcome to To-Do app')})
 app.use('/user', userRoutes)
 app.use('/todo', todoRoutes)
 
@@ -28,4 +27,4 @@ app.use((req, res, next) => {
 });
 
 const port=process.env.PORT||3000
-app.listen(port,()=>{console.log(`server running at port ${port}`)})
+app.listen(port,()=>{console.log(`server running at port ${port}....`)})
