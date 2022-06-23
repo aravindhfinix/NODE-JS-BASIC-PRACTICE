@@ -23,9 +23,9 @@
     <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
-
   var form = document.getElementById('form');
   var input = document.getElementById('input');
+
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -34,15 +34,12 @@
       input.value = '';
     }
   });
-  socket.on('chat message', function(msg) {
-    console.log(msg);
-      document.getElementById("message").innerHTML = msg;
+
+  socket.on('chat message', function(msg,userID) {
+      document.getElementById("message").innerHTML =userID+":"+msg;
   });
 
-  socket.on('message chat', function(msg) {
-    console.log(msg);
-      document.getElementById("message").innerHTML = msg;
-  });
+ 
 </script>
   </body>
 </html>

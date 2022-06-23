@@ -5,8 +5,7 @@
   "main": "task1.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon task1",
-    "find":"jshint task1.js"
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
