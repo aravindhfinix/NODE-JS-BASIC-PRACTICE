@@ -3,7 +3,7 @@ const todoSchema=require('../models/todoschema')
 const userSchema=require('../models/userschema')
 const sendMail=require('../helpers/mail').sendMail
 const dateToday=require('../helpers/date').todaysDate
-const lodash = require('lodash');
+const _= require('lodash');
 
 //CREATING A TASK
 
@@ -222,29 +222,44 @@ await todoSchema.aggregate([
 ])
 
 .then(results=>{
-
-    let grouped = lodash.reduce(results, (result, user) => {
+if(results.length!=0){
+    let grouped = _.reduce(results, (result, user) => {
 
     (result[user.uemail.email] || (result[user.uemail.email] = [])).push(user);
     return result;
 }, {});
 
-console.log(grouped);
     // cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 23 hrs from started time
         for(var i in grouped){
             const email=i
             const array=grouped[i]
+            var a1=[].splice(',')
+           var no=0
             for(var d in array){
                 var task=array[d].taskName
-                var status=array[d].status
+                if(array[d].status===true){
+                var status="completed"
+                }
+                else{
+                var status="not-completed"
+                }
+                var name=array[d].userName
+                no++
+                a1.push(`${no}.task ${task} is ${status}`)
             }
-            console.log (task)
-            // sendMail(email,task,status)           //invoking mail function
+            var a2=a1.join('\r\n')
+    
+            sendMail(email,name,a2)           //invoking mail function
             }
          
             res.json({message:'EOD status sent'})
+        }
+else{
+    res.send('no tasks found')
+    }
       })
         // } )
+    
         
         .catch(err => {
             console.log(err);
@@ -252,5 +267,5 @@ console.log(grouped);
                 error : err.message
             })
         });
-      
+    
 } 

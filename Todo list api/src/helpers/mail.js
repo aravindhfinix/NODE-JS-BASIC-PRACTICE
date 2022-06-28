@@ -10,12 +10,12 @@ const transporter  = nodeMailer.createTransport({
 });
      
 //EOD MAIL
-exports.sendMail = async (userMail,task,status) => {
+exports.sendMail = async (userMail,name,taskStatus) => {
     var mailOptions = {
             from: process.env.EMAIL,
             to:userMail,
             subject: 'Task Status Report',
-            html: `the status of task ${task} work completion ${status}`
+            html: `EOD task reminder for <b>${name}:</b><pre>${taskStatus}</pre>`
      }
    
     
