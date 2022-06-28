@@ -3,6 +3,7 @@ const todoSchema=require('../models/todoschema')
 const userSchema=require('../models/userschema')
 const sendMail=require('../helpers/mail').sendMail
 const dateToday=require('../helpers/date').todaysDate
+const lodash = require('lodash');
 
 //CREATING A TASK
 
@@ -209,7 +210,7 @@ else{
 exports.mail=async(req,res)=>{
 
 await todoSchema.aggregate([
-    {$match:{taskCreatedAt:dateToday}},
+    // {$match:{taskCreatedAt:dateToday}},
     {
     $lookup: {
         from: "users",
@@ -220,20 +221,30 @@ await todoSchema.aggregate([
 {$unwind: "$uemail"}
 ])
 
-.then(result=>{
-    console.log(result)
-    cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 23 hrs from started time
+.then(results=>{
 
-        for(var i in result){
-            const name=result[i].uemail.name
-            const status=result[i].status
-            const email=result[i].uemail.email
-            sendMail(email,name,status)              //invoking mail function
-            console.log(email)
+    let grouped = lodash.reduce(results, (result, user) => {
+
+    (result[user.uemail.email] || (result[user.uemail.email] = [])).push(user);
+    return result;
+}, {});
+
+console.log(grouped);
+    // cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 23 hrs from started time
+        for(var i in grouped){
+            const email=i
+            const array=grouped[i]
+            for(var d in array){
+                var task=array[d].taskName
+                var status=array[d].status
             }
+            console.log (task)
+            // sendMail(email,task,status)           //invoking mail function
+            }
+         
             res.json({message:'EOD status sent'})
       })
-        } )
+        // } )
         
         .catch(err => {
             console.log(err);

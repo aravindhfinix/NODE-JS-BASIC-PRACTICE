@@ -5,7 +5,7 @@ const passport=require('passport')
 require('../middleware/passport')(passport)
 
 
-router.post('/create',passport.authenticate('jwt',{session:false}), todo.create)
+router.post('/create', todo.create)
 router.get('/taskList',todo.previous)
 router.post('/update/:id',todo.update)
 router.post('/delete/:id',todo.delete)
