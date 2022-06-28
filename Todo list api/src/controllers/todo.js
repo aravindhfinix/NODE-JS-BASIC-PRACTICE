@@ -210,7 +210,7 @@ else{
 exports.mail=async(req,res)=>{
 
 await todoSchema.aggregate([
-    // {$match:{taskCreatedAt:dateToday}},
+    {$match:{taskCreatedAt:dateToday}},
     {
     $lookup: {
         from: "users",
@@ -222,6 +222,7 @@ await todoSchema.aggregate([
 ])
 
 .then(results=>{
+    cron.schedule('00 00 18 * * *',()=>{            //sheduled for every day 6PM
 if(results.length!=0){
     let grouped = _.reduce(results, (result, user) => {
 
@@ -229,7 +230,7 @@ if(results.length!=0){
     return result;
 }, {});
 
-    // cron.schedule('00 00 */23 * * *',()=>{            //sheduled for every 23 hrs from started time
+   
         for(var i in grouped){
             const email=i
             const array=grouped[i]
@@ -255,10 +256,11 @@ if(results.length!=0){
             res.json({message:'EOD status sent'})
         }
 else{
-    res.send('no tasks found')
+    res.json({message:'no tasks found'})
+    console.log('no task')
     }
       })
-        // } )
+        } )
     
         
         .catch(err => {
