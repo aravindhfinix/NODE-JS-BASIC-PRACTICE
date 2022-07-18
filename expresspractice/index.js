@@ -10,7 +10,7 @@ app.get('/',(req,res)=>{
         const date=new Date()
         const date1=date.set
 console.log(date1)
-res.send('date')
+res.send('welcome')
 });
     app.get('/function',(req,res)=>
     {res.sendFile(`${__dirname}/main.html`)})
