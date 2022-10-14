@@ -1,0 +1,382 @@
+{
+	"info": {
+		"_postman_id": "12854465-8fdc-41d1-ba85-8c638faaa990",
+		"name": "stripe test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22088289"
+	},
+	"item": [
+		{
+			"name": "create customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"aravindh@mailinator.com\",\n    \"name\":\"aravindh\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/stripe/create-customer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stripe",
+						"create-customer"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "create customer",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"aravindh@mailinator.com\",\n    \"name\":\"aravindh\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/stripe/create-customer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"stripe",
+								"create-customer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "664"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"298-xQjtN25WKrl6jTPZNRL9z2+vl2E\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Oct 2022 08:43:18 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"customer created\",\n    \"data\": {\n        \"id\": \"cus_MbxOS7z30NDgVb\",\n        \"object\": \"customer\",\n        \"address\": {\n            \"city\": null,\n            \"country\": null,\n            \"line1\": null,\n            \"line2\": null,\n            \"postal_code\": \"default\",\n            \"state\": null\n        },\n        \"balance\": 0,\n        \"created\": 1665736998,\n        \"currency\": null,\n        \"default_source\": null,\n        \"delinquent\": false,\n        \"description\": null,\n        \"discount\": null,\n        \"email\": \"aravindh@mailinator.com\",\n        \"invoice_prefix\": \"C897816A\",\n        \"invoice_settings\": {\n            \"custom_fields\": null,\n            \"default_payment_method\": null,\n            \"footer\": null,\n            \"rendering_options\": null\n        },\n        \"livemode\": false,\n        \"metadata\": {},\n        \"name\": \"aravindh\",\n        \"next_invoice_sequence\": 1,\n        \"phone\": null,\n        \"preferred_locales\": [],\n        \"shipping\": null,\n        \"tax_exempt\": \"none\",\n        \"test_clock\": null\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "charge payment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"aravindh@mailinator.com\",\n    \"name\":\"aravindh\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/stripe/charge-payment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stripe",
+						"charge-payment"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "charge payment",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"aravindh@mailinator.com\",\n    \"name\":\"aravindh\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/stripe/charge-payment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"stripe",
+								"charge-payment"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3165"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"c5d-fDHrxsBgjCHF839scCmIh/kd6HQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Oct 2022 08:46:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"payment charged\",\n    \"data\": {\n        \"id\": \"pi_3LsjWnFYrNDkvO6X1l6lCnXp\",\n        \"object\": \"payment_intent\",\n        \"amount\": 100,\n        \"amount_capturable\": 0,\n        \"amount_details\": {\n            \"tip\": {}\n        },\n        \"amount_received\": 100,\n        \"application\": null,\n        \"application_fee_amount\": null,\n        \"automatic_payment_methods\": null,\n        \"canceled_at\": null,\n        \"cancellation_reason\": null,\n        \"capture_method\": \"automatic\",\n        \"charges\": {\n            \"object\": \"list\",\n            \"data\": [\n                {\n                    \"id\": \"ch_3LsjWnFYrNDkvO6X1JfSBSvO\",\n                    \"object\": \"charge\",\n                    \"amount\": 100,\n                    \"amount_captured\": 100,\n                    \"amount_refunded\": 0,\n                    \"application\": null,\n                    \"application_fee\": null,\n                    \"application_fee_amount\": null,\n                    \"balance_transaction\": \"txn_3LsjWnFYrNDkvO6X1boK3X71\",\n                    \"billing_details\": {\n                        \"address\": {\n                            \"city\": null,\n                            \"country\": null,\n                            \"line1\": null,\n                            \"line2\": null,\n                            \"postal_code\": null,\n                            \"state\": null\n                        },\n                        \"email\": null,\n                        \"name\": null,\n                        \"phone\": null\n                    },\n                    \"calculated_statement_descriptor\": \"Stripe\",\n                    \"captured\": true,\n                    \"created\": 1665737162,\n                    \"currency\": \"usd\",\n                    \"customer\": null,\n                    \"description\": null,\n                    \"destination\": null,\n                    \"dispute\": null,\n                    \"disputed\": false,\n                    \"failure_balance_transaction\": null,\n                    \"failure_code\": null,\n                    \"failure_message\": null,\n                    \"fraud_details\": {},\n                    \"invoice\": null,\n                    \"livemode\": false,\n                    \"metadata\": {},\n                    \"on_behalf_of\": null,\n                    \"order\": null,\n                    \"outcome\": {\n                        \"network_status\": \"approved_by_network\",\n                        \"reason\": null,\n                        \"risk_level\": \"normal\",\n                        \"risk_score\": 46,\n                        \"seller_message\": \"Payment complete.\",\n                        \"type\": \"authorized\"\n                    },\n                    \"paid\": true,\n                    \"payment_intent\": \"pi_3LsjWnFYrNDkvO6X1l6lCnXp\",\n                    \"payment_method\": \"pm_1LsjWnFYrNDkvO6X0MFvg9yy\",\n                    \"payment_method_details\": {\n                        \"card\": {\n                            \"brand\": \"visa\",\n                            \"checks\": {\n                                \"address_line1_check\": null,\n                                \"address_postal_code_check\": null,\n                                \"cvc_check\": \"pass\"\n                            },\n                            \"country\": \"US\",\n                            \"exp_month\": 10,\n                            \"exp_year\": 2023,\n                            \"fingerprint\": \"rFdoCpZnFROf3HP4\",\n                            \"funding\": \"credit\",\n                            \"installments\": null,\n                            \"last4\": \"4242\",\n                            \"mandate\": null,\n                            \"network\": \"visa\",\n                            \"three_d_secure\": null,\n                            \"wallet\": null\n                        },\n                        \"type\": \"card\"\n                    },\n                    \"receipt_email\": null,\n                    \"receipt_number\": null,\n                    \"receipt_url\": \"https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xTHNoZGJGWXJORGt2TzZYKMvDpJoGMgbH7HXA7WA6LBaYnHRlZu_a1FlP8NZejif2EijlVnfmoAg7ySa8Lpt0CjMFbWnA5trOIPUK\",\n                    \"refunded\": false,\n                    \"refunds\": {\n                        \"object\": \"list\",\n                        \"data\": [],\n                        \"has_more\": false,\n                        \"total_count\": 0,\n                        \"url\": \"/v1/charges/ch_3LsjWnFYrNDkvO6X1JfSBSvO/refunds\"\n                    },\n                    \"review\": null,\n                    \"shipping\": null,\n                    \"source\": null,\n                    \"source_transfer\": null,\n                    \"statement_descriptor\": null,\n                    \"statement_descriptor_suffix\": null,\n                    \"status\": \"succeeded\",\n                    \"transfer_data\": null,\n                    \"transfer_group\": null\n                }\n            ],\n            \"has_more\": false,\n            \"total_count\": 1,\n            \"url\": \"/v1/charges?payment_intent=pi_3LsjWnFYrNDkvO6X1l6lCnXp\"\n        },\n        \"client_secret\": \"pi_3LsjWnFYrNDkvO6X1l6lCnXp_secret_BhqA9EOlTmPvtkRvdL0KE4Rkl\",\n        \"confirmation_method\": \"automatic\",\n        \"created\": 1665737161,\n        \"currency\": \"usd\",\n        \"customer\": null,\n        \"description\": null,\n        \"invoice\": null,\n        \"last_payment_error\": null,\n        \"livemode\": false,\n        \"metadata\": {},\n        \"next_action\": null,\n        \"on_behalf_of\": null,\n        \"payment_method\": \"pm_1LsjWnFYrNDkvO6X0MFvg9yy\",\n        \"payment_method_options\": {\n            \"card\": {\n                \"installments\": null,\n                \"mandate_options\": null,\n                \"network\": null,\n                \"request_three_d_secure\": \"automatic\"\n            }\n        },\n        \"payment_method_types\": [\n            \"card\"\n        ],\n        \"processing\": null,\n        \"receipt_email\": null,\n        \"review\": null,\n        \"setup_future_usage\": \"off_session\",\n        \"shipping\": null,\n        \"source\": null,\n        \"statement_descriptor\": null,\n        \"statement_descriptor_suffix\": null,\n        \"status\": \"succeeded\",\n        \"transfer_data\": null,\n        \"transfer_group\": null\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"product_name\": \"test dummy\",\n\t\"price\": \"1\",\n\t\"interval\": \"day\",\n\t\"interval_count\": 1,\n\t\"currency\": \"usd\",\n\t\"product_description\": \"Customers - 10 Customers\"\n}\t",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/stripe/add-product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stripe",
+						"add-product"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "create product",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"product_name\": \"test dummy\",\n\t\"price\": \"1\",\n\t\"interval\": \"day\",\n\t\"interval_count\": 1,\n\t\"currency\": \"usd\",\n\t\"product_description\": \"Customers - 10 Customers\"\n}\t",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/stripe/add-product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"stripe",
+								"add-product"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "959"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3bf-Xrp9WseezbmKoya2/bStRa8S4HY\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Oct 2022 08:54:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"product created\",\n    \"product\": {\n        \"id\": \"prod_MbxZZCeX6itTiW\",\n        \"object\": \"product\",\n        \"active\": true,\n        \"attributes\": [],\n        \"created\": 1665737654,\n        \"default_price\": null,\n        \"description\": \"Customers - 10 Customers\",\n        \"images\": [],\n        \"livemode\": false,\n        \"metadata\": {},\n        \"name\": \"test dummy\",\n        \"package_dimensions\": null,\n        \"shippable\": null,\n        \"statement_descriptor\": null,\n        \"tax_code\": null,\n        \"type\": \"service\",\n        \"unit_label\": null,\n        \"updated\": 1665737654,\n        \"url\": null\n    },\n    \"price\": {\n        \"id\": \"price_1LsjekFYrNDkvO6XcQ8t8UHv\",\n        \"object\": \"price\",\n        \"active\": true,\n        \"billing_scheme\": \"per_unit\",\n        \"created\": 1665737654,\n        \"currency\": \"usd\",\n        \"custom_unit_amount\": null,\n        \"livemode\": false,\n        \"lookup_key\": null,\n        \"metadata\": {},\n        \"nickname\": null,\n        \"product\": \"prod_MbxZZCeX6itTiW\",\n        \"recurring\": {\n            \"aggregate_usage\": null,\n            \"interval\": \"day\",\n            \"interval_count\": 1,\n            \"trial_period_days\": null,\n            \"usage_type\": \"licensed\"\n        },\n        \"tax_behavior\": \"unspecified\",\n        \"tiers_mode\": null,\n        \"transform_quantity\": null,\n        \"type\": \"recurring\",\n        \"unit_amount\": 100,\n        \"unit_amount_decimal\": \"100\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "subscription",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"test\",\n\t\"email\": \"testonil@mailinator.com\",\n\t\"price\": \"price_1LsjekFYrNDkvO6XcQ8t8UHv\",\n    \"trial_period_days\":0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/stripe/subscribe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stripe",
+						"subscribe"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "subscription",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test\",\n\t\"email\": \"testonil@mailinator.com\",\n\t\"price\": \"price_1LsjekFYrNDkvO6XcQ8t8UHv\",\n    \"trial_period_days\":0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/stripe/subscribe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"stripe",
+								"subscribe"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2847"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"b1f-aHWg3iOs33d4tifNL1X6CIKu/OE\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 14 Oct 2022 09:31:23 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"subscription created\",\n    \"data\": {\n        \"id\": \"sub_1LskEeFYrNDkvO6XIYxIVQmK\",\n        \"object\": \"subscription\",\n        \"application\": null,\n        \"application_fee_percent\": null,\n        \"automatic_tax\": {\n            \"enabled\": false\n        },\n        \"billing_cycle_anchor\": 1665739880,\n        \"billing_thresholds\": null,\n        \"cancel_at\": null,\n        \"cancel_at_period_end\": false,\n        \"canceled_at\": null,\n        \"collection_method\": \"charge_automatically\",\n        \"created\": 1665739880,\n        \"currency\": \"usd\",\n        \"current_period_end\": 1665826280,\n        \"current_period_start\": 1665739880,\n        \"customer\": \"cus_MbyAjBzgf0igo1\",\n        \"days_until_due\": null,\n        \"default_payment_method\": \"pm_1LskEcFYrNDkvO6X3I1kxEDK\",\n        \"default_source\": null,\n        \"default_tax_rates\": [],\n        \"description\": null,\n        \"discount\": null,\n        \"ended_at\": null,\n        \"items\": {\n            \"object\": \"list\",\n            \"data\": [\n                {\n                    \"id\": \"si_MbyBlVvuaeQrSg\",\n                    \"object\": \"subscription_item\",\n                    \"billing_thresholds\": null,\n                    \"created\": 1665739881,\n                    \"metadata\": {},\n                    \"plan\": {\n                        \"id\": \"price_1LsjekFYrNDkvO6XcQ8t8UHv\",\n                        \"object\": \"plan\",\n                        \"active\": true,\n                        \"aggregate_usage\": null,\n                        \"amount\": 100,\n                        \"amount_decimal\": \"100\",\n                        \"billing_scheme\": \"per_unit\",\n                        \"created\": 1665737654,\n                        \"currency\": \"usd\",\n                        \"interval\": \"day\",\n                        \"interval_count\": 1,\n                        \"livemode\": false,\n                        \"metadata\": {},\n                        \"nickname\": null,\n                        \"product\": \"prod_MbxZZCeX6itTiW\",\n                        \"tiers_mode\": null,\n                        \"transform_usage\": null,\n                        \"trial_period_days\": null,\n                        \"usage_type\": \"licensed\"\n                    },\n                    \"price\": {\n                        \"id\": \"price_1LsjekFYrNDkvO6XcQ8t8UHv\",\n                        \"object\": \"price\",\n                        \"active\": true,\n                        \"billing_scheme\": \"per_unit\",\n                        \"created\": 1665737654,\n                        \"currency\": \"usd\",\n                        \"custom_unit_amount\": null,\n                        \"livemode\": false,\n                        \"lookup_key\": null,\n                        \"metadata\": {},\n                        \"nickname\": null,\n                        \"product\": \"prod_MbxZZCeX6itTiW\",\n                        \"recurring\": {\n                            \"aggregate_usage\": null,\n                            \"interval\": \"day\",\n                            \"interval_count\": 1,\n                            \"trial_period_days\": null,\n                            \"usage_type\": \"licensed\"\n                        },\n                        \"tax_behavior\": \"unspecified\",\n                        \"tiers_mode\": null,\n                        \"transform_quantity\": null,\n                        \"type\": \"recurring\",\n                        \"unit_amount\": 100,\n                        \"unit_amount_decimal\": \"100\"\n                    },\n                    \"quantity\": 1,\n                    \"subscription\": \"sub_1LskEeFYrNDkvO6XIYxIVQmK\",\n                    \"tax_rates\": []\n                }\n            ],\n            \"has_more\": false,\n            \"total_count\": 1,\n            \"url\": \"/v1/subscription_items?subscription=sub_1LskEeFYrNDkvO6XIYxIVQmK\"\n        },\n        \"latest_invoice\": \"in_1LskEeFYrNDkvO6Xqv6nUZUp\",\n        \"livemode\": false,\n        \"metadata\": {},\n        \"next_pending_invoice_item_invoice\": null,\n        \"pause_collection\": null,\n        \"payment_settings\": {\n            \"payment_method_options\": null,\n            \"payment_method_types\": [\n                \"card\"\n            ],\n            \"save_default_payment_method\": \"off\"\n        },\n        \"pending_invoice_item_interval\": null,\n        \"pending_setup_intent\": null,\n        \"pending_update\": null,\n        \"plan\": {\n            \"id\": \"price_1LsjekFYrNDkvO6XcQ8t8UHv\",\n            \"object\": \"plan\",\n            \"active\": true,\n            \"aggregate_usage\": null,\n            \"amount\": 100,\n            \"amount_decimal\": \"100\",\n            \"billing_scheme\": \"per_unit\",\n            \"created\": 1665737654,\n            \"currency\": \"usd\",\n            \"interval\": \"day\",\n            \"interval_count\": 1,\n            \"livemode\": false,\n            \"metadata\": {},\n            \"nickname\": null,\n            \"product\": \"prod_MbxZZCeX6itTiW\",\n            \"tiers_mode\": null,\n            \"transform_usage\": null,\n            \"trial_period_days\": null,\n            \"usage_type\": \"licensed\"\n        },\n        \"quantity\": 1,\n        \"schedule\": null,\n        \"start_date\": 1665739880,\n        \"status\": \"active\",\n        \"test_clock\": null,\n        \"transfer_data\": null,\n        \"trial_end\": null,\n        \"trial_start\": null\n    }\n}"
+				}
+			]
+		}
+	]
+}
