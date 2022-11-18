@@ -15,5 +15,10 @@ exports.socketInit = () => {
             message: "socket connection is up and running...",
             data: {},
         });
+        socket.on("disconnect", () => {
+            console.log(
+                `a user disconneted ${socket.handshake.query.id} with socket id ${socket.id} on ${Date.now()}`
+            );
+        });
     });
 } 
