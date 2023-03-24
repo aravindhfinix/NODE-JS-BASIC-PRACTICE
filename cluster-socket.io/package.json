@@ -1,0 +1,44 @@
+{
+  "dependencies": {
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-runtime": "^6.26.0",
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "i": "^0.3.7",
+    "joi": "^17.8.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.10.0",
+    "nodemailer": "^6.9.1",
+    "npm": "^9.5.1",
+    "socket.io": "^4.6.1"
+  },
+  "scripts": {
+    "server": "nodemon --exec babel-node src/server.js",
+    "start": "nodemon --exec babel-node lib/server.js",
+    "build": "babel src -d lib",
+    "dev": "babel src -d lib && node lib/server.js"
+  },
+  "name": "nodemailer",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanjayrahul19/nodemailer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sanjayrahul19/nodemailer/issues"
+  },
+  "homepage": "https://github.com/sanjayrahul19/nodemailer#readme",
+  "description": "",
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.21.0"
+  }
+}
